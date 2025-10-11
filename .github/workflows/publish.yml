@@ -1,12 +1,17 @@
 name: Publish
 
 on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Git tag for the release. For example, v1.2.3'
+        required: false
   release:
     types:
       - published
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref_name }}
+  group: ${{ github.workflow }}-${{ github.ref_name }}-${{ inputs.version }}
   cancel-in-progress: true
 
 permissions: {}
@@ -43,7 +48,7 @@ jobs:
       - run: gh release download --repo "${REPO}" --pattern '*.deb' "${TAG}"
         env:
           REPO: ${{ github.repository }}
-          TAG: ${{ github.ref_name }}
+          TAG: ${{ inputs.version || github.ref_name }}
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Attestation verification
