@@ -90,7 +90,7 @@ $ composer-semver parse '~>1.2'
 $ echo $?
 1
 
-$ bin/composer-semver parse --help
+$ composer-semver parse --help
 Description:
   Parses a constraint string and strip its ignorable parts.
   This is a wrapper of the Composer\Semver\VersionParser::parseConstraints() method.
@@ -176,7 +176,7 @@ so you can work with the package versions exactly like Composer does without ins
 
 ```sh
 brew tap typisttech/tap
-brew install typisttech/composer-semver
+brew install typisttech/tap/composer-semver
 ```
 
 ### `apt-get` (Debian based distributions, for example: Ubuntu)
