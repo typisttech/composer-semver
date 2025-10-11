@@ -178,25 +178,27 @@ brew tap typisttech/tap
 brew install typisttech/composer-semver
 ```
 
-### `apt` (Debian based distributions, for example: Ubuntu)
+### `apt-get` (Debian based distributions, for example: Ubuntu)
 
 ```sh
-# TODO!
+curl -1sLf 'https://dl.cloudsmith.io/public/typisttech/oss/setup.deb.sh' | sudo -E bash
+sudo apt-get install composer-version
 ```
+
+Instead of the automatic setup script, you can manually configure the repository with the instructsions on [Cloudsmith](https://cloudsmith.io/~typisttech/repos/oss/setup/#formats-deb).
 
 ### Manual `.deb` (Debian based distributions, for example: Ubuntu)
 
 > [!WARNING]
 > If you install the `.deb` file manually, you have to take care of updating it by yourself.
 
-Download the latest `.deb` file from [GitHub Releases](https://github.com/typisttech/composer-semver/releases/latest).
-Alternatively, you can download it via [`gh`](https://cli.github.com/):
+Download the latest `.deb` file from [GitHub Releases](https://github.com/typisttech/composer-semver/releases/latest), or via [`gh`](https://cli.github.com/):
 ```sh
 # Both arm64 (aarch64) and amd64 (x86_64) architectures are available.
 gh release download --repo 'typisttech/composer-semver' --pattern 'composer-semver_Linux_arm64.deb'
 ```
 
-Then, **optionally**, verify the `.deb` file:
+**Optionally**, verify the `.deb` file:
 ```sh
 gh attestation verify --repo 'typisttech/composer-semver' 'composer-semver_Linux_arm64.deb'
 ```
@@ -211,15 +213,14 @@ sudo dpkg -i composer-semver_Linux_arm64.deb
 > [!WARNING]
 > If you install the binary manually, you have to take care of updating it by yourself.
 
-Download the latest `.tar.gz` file from [GitHub Releases](https://github.com/typisttech/composer-semver/releases/latest).
-Alternatively, you can download it via [`gh`](https://cli.github.com/):
+Download the latest `.tar.gz` file from [GitHub Releases](https://github.com/typisttech/composer-semver/releases/latest), or via [`gh`](https://cli.github.com/):
 ```sh
 # Both Darwin (macOS) and Linux operating systems are available.
 # Both arm64 (aarch64) and amd64 (x86_64) architectures are available.
 gh release download --repo 'typisttech/composer-semver' --pattern 'composer-semver_Darwin_arm64.tar.gz'
 ```
 
-Then, **optionally**, verify the `.tar.gz` file:
+**Optionally**, verify the `.tar.gz` file:
 ```sh
 gh attestation verify --repo 'typisttech/composer-semver' 'composer-semver_Darwin_arm64.tar.gz'
 ```
