@@ -111,6 +111,12 @@ Options:
   -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 ```
 
+### Print Bundled PHP and `composer/semver` Versions
+
+```console
+$ composer-semver --version
+```
+
 ---
 
 > [!TIP]
