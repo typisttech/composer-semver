@@ -8,7 +8,7 @@ version: ${VERSION}
 maintainer: "Typist Tech Limited <opensource+composer-semver@typist.tech>"
 description: |
   Static linked CLI wrapper for composer/semver.
-  Parsing and validating versions exactly like composer does without installing PHP.
+  Parsing and validating versions exactly like Composer does without installing PHP.
 homepage: "https://github.com/typisttech/composer-semver"
 license: MIT
 section: utils

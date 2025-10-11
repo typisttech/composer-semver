@@ -1,6 +1,6 @@
 {
   "name": "typisttech/composer-semver",
-  "description": "Static linked CLI wrapper for composer/semver. Parsing and validating versions exactly like composer does without installing PHP.",
+  "description": "Static linked CLI wrapper for composer/semver. Parsing and validating versions exactly like Composer does without installing PHP.",
   "license": "MIT",
   "type": "project",
   "keywords": [
