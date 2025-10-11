@@ -111,6 +111,18 @@ Options:
   -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 ```
 
+---
+
+> [!TIP]
+> **Hire Tang Rufus!**
+>
+> I am looking for my next role, freelance or full-time.
+> If you find this tool useful, I can build you more weird PHP / Ruby / Go stuffs like this.
+>
+> Contact me at https://typist.tech/contact/
+
+---
+
 ## Why
 
 Under the hood, [Composer](https://getcomposer.org/) uses [
@@ -146,6 +158,16 @@ Working with Composer packages versions without `composer/semver` is a bit trick
 
 `Composer SemVer` wraps `composer/semver` and the PHP runtime as a static linked CLI tool,
 so you can work with the package versions exactly like Composer does without installing PHP.
+
+> [!TIP]
+> **Hire Tang Rufus!**
+>
+> There is no need to understand any of these quirks.
+> Let me handle them for you.
+> I am seeking my next job, freelance or full-time.
+>
+> If you are looking for a PHP / Ruby / Go developer,
+> contact me at https://typist.tech/contact/
 
 ## Installation
 
