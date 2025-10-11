@@ -1,0 +1,7 @@
+{
+  "output": "phar/composer-semver",
+  "check-requirements": false,
+  "datetime": "datetime",
+  "datetime-format": "Y-m-d",
+  "git-tag": "git-tag"
+}

@@ -1,0 +1,73 @@
+{
+  "name": "typisttech/composer-semver",
+  "description": "Static linked CLI wrapper for composer/semver. Parsing and validating versions exactly like composer does without installing PHP.",
+  "license": "MIT",
+  "type": "project",
+  "keywords": [
+    "cli",
+    "semver",
+    "semantic",
+    "composer",
+    "versioning",
+    "validation"
+  ],
+  "authors": [
+    {
+      "name": "Typist Tech",
+      "homepage": "https://typist.tech"
+    },
+    {
+      "name": "Tang Rufus",
+      "email": "tangrufus@gmail.com",
+      "homepage": "https://tangrufus.com",
+      "role": "Developer"
+    }
+  ],
+  "homepage": "https://github.com/typisttech/composer-semver",
+  "support": {
+    "issues": "https://github.com/typisttech/composer-semver/issues",
+    "source": "https://github.com/typisttech/composer-semver"
+  },
+  "require": {
+    "php": "~8.4.13",
+    "composer-runtime-api": "^2.2",
+    "composer/semver": "^3.4",
+    "symfony/console": "^7.3",
+    "symfony/polyfill-iconv": "^1.33"
+  },
+  "require-dev": {
+    "phpstan/extension-installer": "^1.4",
+    "phpstan/phpstan": "^2.1",
+    "phpstan/phpstan-deprecation-rules": "^2.0",
+    "phpstan/phpstan-strict-rules": "^2.0",
+    "phpstan/phpstan-symfony": "^2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "TypistTech\\ComposerSemVer\\": "src/"
+    }
+  },
+  "bin": [
+    "bin/composer-semver"
+  ],
+  "config": {
+    "allow-plugins": {
+      "phpstan/extension-installer": true
+    },
+    "platform-check": false,
+    "sort-packages": true
+  },
+  "scripts": {
+    "compile": [
+      "@phar",
+      "spc craft",
+      "mkdir -p out",
+      "spc micro:combine phar/composer-semver --output out/composer-semver",
+      "out/composer-semver info"
+    ],
+    "lint": [
+      "pint --test",
+      "phpstan analyse"
+    ]
+  }
+}

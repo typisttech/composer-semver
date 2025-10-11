@@ -1,0 +1,13 @@
+# Composer
+/vendor/
+
+# Box
+/phar/
+
+# Static PHP CLI (spc)
+/buildroot/
+/downloads/
+/log/
+/out/
+/pkgroot/
+/source/
