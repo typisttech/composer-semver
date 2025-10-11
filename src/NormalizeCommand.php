@@ -16,7 +16,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     description: <<<'DESCRIPTION'
         Normalizes a version string to be able to perform comparisons on it.
           This is a wrapper of the <href=https://github.com/composer/semver/blob/b52829022cb18210bb84e44e457bd4e890f8d2a7/src/VersionParser.php#L98-L108>Composer\Semver\VersionParser::normalize()</> method.
-        DESCRIPTION
+        DESCRIPTION,
 )]
 class NormalizeCommand extends Command
 {
