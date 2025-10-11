@@ -49,7 +49,7 @@ jobs:
         env:
           REPO: ${{ github.repository }}
           TAG: ${{ inputs.version || github.ref_name }}
-          GITHUB_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
 
       - name: Attestation verification
         run: |
