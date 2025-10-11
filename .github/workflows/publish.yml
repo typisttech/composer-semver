@@ -68,6 +68,7 @@ jobs:
           repo: oss
           distro: any-distro
           release: any-version
+          no-wait-for-sync: true
           file: composer-semver_Linux_arm64.deb
 
       - name: Push composer-semver_Linux_amd64.deb
@@ -80,4 +81,5 @@ jobs:
           repo: oss
           distro: any-distro
           release: any-version
+          no-wait-for-sync: true
           file: composer-semver_Linux_amd64.deb
