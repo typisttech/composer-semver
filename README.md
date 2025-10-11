@@ -117,7 +117,8 @@ Options:
 > **Hire Tang Rufus!**
 >
 > I am looking for my next role, freelance or full-time.
-> If you find this tool useful, I can build you more weird PHP / Ruby / Go stuffs like this.
+> If you find this tool useful, I can build you more weird stuffs like this.
+> Let's talk if you are hiring PHP / Ruby / Go developers.
 >
 > Contact me at https://typist.tech/contact/
 
@@ -166,7 +167,7 @@ so you can work with the package versions exactly like Composer does without ins
 > Let me handle them for you.
 > I am seeking my next job, freelance or full-time.
 >
-> If you are looking for a PHP / Ruby / Go developer,
+> If you are hiring PHP / Ruby / Go developers,
 > contact me at https://typist.tech/contact/
 
 ## Installation
