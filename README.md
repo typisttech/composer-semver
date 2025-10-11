@@ -219,6 +219,11 @@ Finally, install the package:
 sudo dpkg -i composer-semver_Linux_arm64.deb
 ```
 
+For shell completions, follow the instructions from:
+```sh
+composer-semver completion --help
+```
+
 ## Manual Binary
 
 > [!WARNING]
@@ -242,6 +247,11 @@ tar -xvf 'composer-semver_Darwin_arm64.tar.gz'
 
 # Or, move it to any directory under `$PATH`
 mv composer-semver /usr/local/bin
+```
+
+For shell completions, follow the instructions from:
+```sh
+composer-semver completion --help
 ```
 
 ## Alternatives
