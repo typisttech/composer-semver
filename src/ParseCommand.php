@@ -15,7 +15,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     description: <<<'DESCRIPTION'
         Parses a constraint string and strip its ignorable parts.
           This is a wrapper of the <href=https://github.com/composer/semver/blob/b52829022cb18210bb84e44e457bd4e890f8d2a7/src/VersionParser.php#L251-L258>Composer\Semver\VersionParser::parseConstraints()</> method.
-        DESCRIPTION
+        DESCRIPTION,
 )]
 class ParseCommand extends Command
 {
