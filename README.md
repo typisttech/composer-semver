@@ -90,7 +90,7 @@ $ composer-semver parse '~>1.2'
 $ echo $?
 1
 
-$ bin/composer-semver parse --help
+$ composer-semver parse --help
 Description:
   Parses a constraint string and strip its ignorable parts.
   This is a wrapper of the Composer\Semver\VersionParser::parseConstraints() method.
@@ -111,13 +111,20 @@ Options:
   -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 ```
 
+### Print Bundled PHP and `composer/semver` Versions
+
+```console
+$ composer-semver --version
+```
+
 ---
 
 > [!TIP]
 > **Hire Tang Rufus!**
 >
 > I am looking for my next role, freelance or full-time.
-> If you find this tool useful, I can build you more weird PHP / Ruby / Go stuffs like this.
+> If you find this tool useful, I can build you more weird stuffs like this.
+> Let's talk if you are hiring PHP / Ruby / Go developers.
 >
 > Contact me at https://typist.tech/contact/
 
@@ -166,7 +173,7 @@ so you can work with the package versions exactly like Composer does without ins
 > Let me handle them for you.
 > I am seeking my next job, freelance or full-time.
 >
-> If you are looking for a PHP / Ruby / Go developer,
+> If you are hiring PHP / Ruby / Go developers,
 > contact me at https://typist.tech/contact/
 
 ## Installation
@@ -175,7 +182,7 @@ so you can work with the package versions exactly like Composer does without ins
 
 ```sh
 brew tap typisttech/tap
-brew install typisttech/composer-semver
+brew install typisttech/tap/composer-semver
 ```
 
 ### `apt-get` (Debian based distributions, for example: Ubuntu)

@@ -6,6 +6,7 @@ namespace TypistTech\ComposerSemVer;
 
 use Composer\InstalledVersions;
 use Symfony\Component\Console\Application as SymfonyConsoleApplication;
+use Symfony\Component\Console\Helper\FormatterHelper;
 
 class Application extends SymfonyConsoleApplication
 {
@@ -76,8 +77,6 @@ class Application extends SymfonyConsoleApplication
         );
         $longVersion .= PHP_EOL . $phpVersion;
 
-        // TODO: Print PHP_BUILD_DATE for PHP >=8.5.
-
         $phpSapi = sprintf(
             '%-15s %s',
             'SAPI',
@@ -87,11 +86,17 @@ class Application extends SymfonyConsoleApplication
 
         $longVersion .= PHP_EOL . PHP_EOL . '<comment>Support Composer SemVer:</>';
 
-        $longVersion .= PHP_EOL . <<<'SUPPORT'
-        If you find this tool useful, please consider supporting its development.
-        Every contribution counts, regardless how big or small.
-        I, <href=https://typist.tech/>Tang Rufus</>, am eternally grateful to all sponsors who fund my open source journey.
-        SUPPORT;
+        $supportBlock = (new FormatterHelper())
+            ->formatBlock(
+                [
+                    'If you find this tool useful, please consider supporting its development.',
+                    'Every contribution counts, regardless how big or small.',
+                    'I am eternally grateful to all sponsors who fund my open source journey.',
+                ],
+                'question',
+                true,
+            );
+        $longVersion .= PHP_EOL . $supportBlock;
 
         $sponsorUrl = sprintf(
             '%1$-15s <href=%2$s>%2$s</>',
@@ -102,11 +107,17 @@ class Application extends SymfonyConsoleApplication
 
         $longVersion .= PHP_EOL . PHP_EOL . '<comment>Hire Tang Rufus:</>';
 
-        $longVersion .= <<<'HIRE'
-        <fg=black;bg=yellow;options=bold>
-        I am looking for my next role!
-        If you are looking for a backend developer to build weird PHP / Ruby / Go stuffs like this, please get in touch.</>
-        HIRE;
+        $hireBlock = (new FormatterHelper())
+            ->formatBlock(
+                [
+                    'I am looking for my next role, freelance or full-time.',
+                    'If you find this tool useful, I can build you more weird stuffs like this.',
+                    "Let's talk if you are hiring PHP / Ruby / Go developers.",
+                ],
+                'error',
+                true,
+            );
+        $longVersion .= PHP_EOL . $hireBlock;
 
         $sponsorUrl = sprintf(
             '%1$-15s <href=%2$s>%2$s</>',
@@ -114,9 +125,6 @@ class Application extends SymfonyConsoleApplication
             'https://typist.tech/contact/',
         );
         $longVersion .= PHP_EOL . PHP_EOL . $sponsorUrl;
-
-
-        $longVersion .= PHP_EOL;
 
         return $longVersion;
     }
