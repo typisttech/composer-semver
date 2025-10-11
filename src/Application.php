@@ -85,7 +85,36 @@ class Application extends SymfonyConsoleApplication
         );
         $longVersion .= PHP_EOL . $phpSapi;
 
-        // TODO: Add sponsor info.
+        $longVersion .= PHP_EOL . PHP_EOL . '<comment>Support Composer SemVer:</>';
+
+        $longVersion .= PHP_EOL . <<<'SUPPORT'
+        If you find this tool useful, please consider supporting its development.
+        Every contribution counts, regardless how big or small.
+        I, <href=https://typist.tech/>Tang Rufus</>, am eternally grateful to all sponsors who fund my open source journey.
+        SUPPORT;
+
+        $sponsorUrl = sprintf(
+            '%1$-15s <href=%2$s>%2$s</>',
+            'GitHub Sponsor',
+            'https://github.com/sponsors/tangrufus',
+        );
+        $longVersion .= PHP_EOL . PHP_EOL . $sponsorUrl;
+
+        $longVersion .= PHP_EOL . PHP_EOL . '<comment>Hire Tang Rufus:</>';
+
+        $longVersion .= <<<'HIRE'
+        <fg=black;bg=yellow;options=bold>
+        I am looking for my next role!
+        If you are looking for a backend developer to build weird PHP / Ruby / Go stuffs like this, please get in touch.</>
+        HIRE;
+
+        $sponsorUrl = sprintf(
+            '%1$-15s <href=%2$s>%2$s</>',
+            'Contact',
+            'https://typist.tech/contact/',
+        );
+        $longVersion .= PHP_EOL . PHP_EOL . $sponsorUrl;
+
 
         $longVersion .= PHP_EOL;
 
