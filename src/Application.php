@@ -41,7 +41,7 @@ class Application extends SymfonyConsoleApplication
             $this->getVersion(),
         );
         // https://github.com/box-project/box/blob/b0123f358f2a32488c92e09bf56f16d185e4e3cb/src/Configuration/Configuration.php#L2116
-        if (preg_match('/^(?<tag>.+)-\d+-g(?<hash>[a-f0-9]{7})$/', $this->getVersion(), $matches)) {
+        if ((bool) preg_match('/^(?<tag>.+)-\d+-g(?<hash>[a-f0-9]{7})$/', $this->getVersion(), $matches)) {
             // Not on a tag.
             $githubUrl = sprintf(
                 '<href=https://github.com/typisttech/composer-semver/compare/%1$s...%2$s>https://github.com/typisttech/composer-semver/compare/%1$s...%2$s</>',

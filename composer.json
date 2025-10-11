@@ -5,11 +5,11 @@
   "type": "project",
   "keywords": [
     "cli",
-    "semver",
-    "semantic",
     "composer",
-    "versioning",
-    "validation"
+    "semantic",
+    "semver",
+    "validation",
+    "versioning"
   ],
   "authors": [
     {
