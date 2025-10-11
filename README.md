@@ -48,8 +48,7 @@ $ echo $?
 
 $ composer-semver normalize --help
 Description:
-  Normalizes a version string to be able to perform comparisons on it.
-  This is a wrapper of the Composer\Semver\VersionParser::normalize() method.
+  Normalizes a version string to be able to perform comparisons on it
 
 Usage:
   normalize [options] [--] <version>
@@ -66,6 +65,9 @@ Options:
       --ansi|--no-ansi             Force (or disable --no-ansi) ANSI output
   -n, --no-interaction             Do not ask any interactive question
   -v|vv|vvv, --verbose             Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+Help:
+  This is a wrapper of the Composer\Semver\VersionParser::normalize() method.
 ```
 
 ### Parse Constraints
@@ -92,8 +94,7 @@ $ echo $?
 
 $ composer-semver parse --help
 Description:
-  Parses a constraint string and strip its ignorable parts.
-  This is a wrapper of the Composer\Semver\VersionParser::parseConstraints() method.
+  Parses a constraint string and strip its ignorable parts
 
 Usage:
   parse <constraints>
@@ -109,6 +110,9 @@ Options:
       --ansi|--no-ansi  Force (or disable --no-ansi) ANSI output
   -n, --no-interaction  Do not ask any interactive question
   -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+Help:
+  This is a wrapper of the Composer\Semver\VersionParser::parseConstraints() method.
 ```
 
 ### Print Bundled PHP and `composer/semver` Versions
