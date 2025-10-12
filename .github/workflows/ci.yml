@@ -60,33 +60,36 @@ jobs:
           - macos-15-intel
     runs-on: ${{ matrix.runs-on }}
     steps:
-      - name: Set OS environment variable
-        run: echo OS="$(uname -s)" >> $GITHUB_ENV
-      - run: echo "${OS}"
+      - uses: actions/checkout@v5
+        with:
+          sparse-checkout: |
+            .github/actions/set-envs
+            craft.yml
+          sparse-checkout-cone-mode: false
 
-      - name: Set ARCH environment variable
-        run: |
-          arch="$(uname -m)"
-          test "${arch}" = "aarch64" && arch="arm64"
-          test "${arch}" = "x86_64" && arch="amd64"
-          echo ARCH="${arch}" >> $GITHUB_ENV
-      - run: echo "$ARCH"
+      - uses: ./.github/actions/set-envs
 
-      - name: Set SPC_OS environment variable
-        run: |
-          spc_os="${OS}"
-          test "${OS}" = "Darwin" && spc_os="macos"
-          test "${OS}" = "Linux" && spc_os="linux"
-          echo SPC_OS="${spc_os}" >> $GITHUB_ENV
-      - run: echo "${SPC_OS}"
+      - run: echo SPC_OS=linux >> $GITHUB_ENV
+        if: runner.os == 'Linux'
+      - run: echo SPC_OS=macos >> $GITHUB_ENV
+        if: runner.os == 'macOS'
+      - run: |
+          echo "::error title=Unable to determine SPC_OS::Unexpected runner.os '${RUNNER_OS}'"
+          exit 1
+        if: env.SPC_OS == ''
+        env:
+          RUNNER_OS: ${{ runner.os }}
 
-      - name: Set SPC_ARCH environment variable
-        run: |
-          spc_arch="${ARCH}"
-          test "${spc_arch}" = "arm64" && spc_arch="aarch64"
-          test "${spc_arch}" = "amd64" && spc_arch="x86_64"
-          echo "SPC_ARCH=${spc_arch}" >> $GITHUB_ENV
-      - run: echo "${SPC_ARCH}"
+      - run: echo SPC_ARCH=aarch64 >> $GITHUB_ENV
+        if: runner.arch == 'ARM64'
+      - run: echo SPC_ARCH=x86_64 >> $GITHUB_ENV
+        if: runner.arch == 'X64'
+      - run: |
+          echo "::error title=Unable to determine SPC_ARCH::Unexpected runner.arch '${RUNNER_ARCH}'"
+          exit 1
+        if: env.SPC_ARCH == ''
+        env:
+          RUNNER_ARCH: ${{ runner.arch }}
 
       - name: Install spc
         run: |
@@ -98,11 +101,6 @@ jobs:
           PATTERN: spc-${{ env.SPC_OS }}-${{ env.SPC_ARCH }}.tar.gz
           GH_TOKEN: ${{ github.token }}
 
-      - uses: actions/checkout@v5
-        with:
-          sparse-checkout: |
-            craft.yml
-          sparse-checkout-cone-mode: false
       - uses: actions/download-artifact@v5
         with:
           name: composer-semver.phar
@@ -197,13 +195,9 @@ jobs:
     env:
       GOFLAGS: '-mod=mod'
     steps:
-      - name: Set ARCH environment variable
-        run: |
-          arch="$(uname -m)"
-          test "${arch}" = "aarch64" && arch="arm64"
-          test "${arch}" = "x86_64" && arch="amd64"
-          echo ARCH="${arch}" >> $GITHUB_ENV
-      - run: echo "$ARCH"
+      - uses: actions/checkout@v5
+
+      - uses: ./.github/actions/set-envs
 
       - uses: actions/download-artifact@v5
         with:
@@ -211,8 +205,6 @@ jobs:
           path: deb
 
       - run: sudo dpkg -i "deb/composer-semver_Linux_${ARCH}.deb"
-
-      - uses: actions/checkout@v5
 
       - uses: actions/setup-go@v6
         with:
@@ -234,15 +226,9 @@ jobs:
     env:
       GOFLAGS: '-mod=mod'
     steps:
-      - name: Set ARCH environment variable
-        run: |
-          arch="$(uname -m)"
-          test "${arch}" = "aarch64" && arch="arm64"
-          test "${arch}" = "x86_64" && arch="amd64"
-          echo ARCH="${arch}" >> $GITHUB_ENV
-      - run: echo "$ARCH"
-
       - uses: actions/checkout@v5
+
+      - uses: ./.github/actions/set-envs
 
       - uses: actions/download-artifact@v5
         with:
