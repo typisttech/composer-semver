@@ -117,7 +117,7 @@ jobs:
         if: steps.restore-micro-sfx.outputs.cache-hit != 'true'
         run: spc craft
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }} # Not a typo.
 
       - name: Cache micro.sfx
         id: cache-micro-sfx
@@ -149,7 +149,7 @@ jobs:
       - name: Download nfpm
         run: gh release download --repo goreleaser/nfpm --pattern 'nfpm_*_arm64.deb' --output nfpm.deb
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
       - name: Install nfpm
         run: sudo dpkg -i nfpm.deb
 
