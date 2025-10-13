@@ -238,7 +238,7 @@ jobs:
       - name: Grant composer-semver binary execute permission
         run: chmod +x out/composer-semver
 
-      - name: Add composer-semver binary to PATH
+      - name: Add composer-semver binary into PATH
         run: echo "${WORKSPACE}/out" >> "$GITHUB_PATH"
         env:
           WORKSPACE: ${{ github.workspace }}
