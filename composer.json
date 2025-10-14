@@ -26,7 +26,8 @@
   "homepage": "https://github.com/typisttech/composer-semver",
   "support": {
     "issues": "https://github.com/typisttech/composer-semver/issues",
-    "source": "https://github.com/typisttech/composer-semver"
+    "source": "https://github.com/typisttech/composer-semver",
+    "security": "https://github.com/typisttech/composer-semver/security"
   },
   "require": {
     "php": "~8.4.13",
