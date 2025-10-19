@@ -60,6 +60,7 @@
   },
   "scripts": {
     "lint": [
+      "@composer normalize --dry-run",
       "pint --test",
       "phpstan analyse"
     ]
