@@ -19,7 +19,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class NormalizeCommand extends Command
 {
     public function __construct(
-        public readonly VersionParser $parser = new VersionParser(),
+        public readonly VersionParser $parser = new VersionParser,
     ) {
         parent::__construct();
     }

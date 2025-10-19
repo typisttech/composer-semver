@@ -18,7 +18,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class ParseCommand extends Command
 {
     public function __construct(
-        public readonly VersionParser $parser = new VersionParser(),
+        public readonly VersionParser $parser = new VersionParser,
     ) {
         parent::__construct();
     }

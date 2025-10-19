@@ -27,7 +27,7 @@ class Application extends SymfonyConsoleApplication
     public function getLongVersion(): string
     {
         $longVersion = self::BANNER;
-        $longVersion .= PHP_EOL . PHP_EOL;
+        $longVersion .= PHP_EOL.PHP_EOL;
 
         $app = sprintf(
             '%-15s <info>%s</info> %s',
@@ -50,9 +50,9 @@ class Application extends SymfonyConsoleApplication
                 $matches['hash'],
             );
         }
-        $longVersion .= PHP_EOL . $githubUrl;
+        $longVersion .= PHP_EOL.$githubUrl;
 
-        $longVersion .= PHP_EOL . PHP_EOL . '<comment>Built with:</>';
+        $longVersion .= PHP_EOL.PHP_EOL.'<comment>Built with:</>';
 
         $semVerVersion = InstalledVersions::getPrettyVersion('composer/semver');
         $semVer = sprintf(
@@ -60,33 +60,33 @@ class Application extends SymfonyConsoleApplication
             'composer/semver',
             $semVerVersion,
         );
-        $longVersion .= PHP_EOL . $semVer;
+        $longVersion .= PHP_EOL.$semVer;
 
         $semVerReleaseUrl = sprintf(
             '<href=https://github.com/composer/semver/releases/tag/%1$s>https://github.com/composer/semver/releases/tag/%1$s</>',
             $semVerVersion,
         );
-        $longVersion .= PHP_EOL . $semVerReleaseUrl;
+        $longVersion .= PHP_EOL.$semVerReleaseUrl;
 
-        $longVersion .= PHP_EOL . PHP_EOL . '<comment>PHP:</>';
+        $longVersion .= PHP_EOL.PHP_EOL.'<comment>PHP:</>';
 
         $phpVersion = sprintf(
             '%-15s %s',
             'Version',
             PHP_VERSION,
         );
-        $longVersion .= PHP_EOL . $phpVersion;
+        $longVersion .= PHP_EOL.$phpVersion;
 
         $phpSapi = sprintf(
             '%-15s %s',
             'SAPI',
             PHP_SAPI,
         );
-        $longVersion .= PHP_EOL . $phpSapi;
+        $longVersion .= PHP_EOL.$phpSapi;
 
-        $longVersion .= PHP_EOL . PHP_EOL . '<comment>Support Composer SemVer:</>';
+        $longVersion .= PHP_EOL.PHP_EOL.'<comment>Support Composer SemVer:</>';
 
-        $supportBlock = (new FormatterHelper())
+        $supportBlock = (new FormatterHelper)
             ->formatBlock(
                 [
                     'If you find this tool useful, please consider supporting its development.',
@@ -96,18 +96,18 @@ class Application extends SymfonyConsoleApplication
                 'question',
                 true,
             );
-        $longVersion .= PHP_EOL . $supportBlock;
+        $longVersion .= PHP_EOL.$supportBlock;
 
         $sponsorUrl = sprintf(
             '%1$-15s <href=%2$s>%2$s</>',
             'GitHub Sponsor',
             'https://github.com/sponsors/tangrufus',
         );
-        $longVersion .= PHP_EOL . PHP_EOL . $sponsorUrl;
+        $longVersion .= PHP_EOL.PHP_EOL.$sponsorUrl;
 
-        $longVersion .= PHP_EOL . PHP_EOL . '<comment>Hire Tang Rufus:</>';
+        $longVersion .= PHP_EOL.PHP_EOL.'<comment>Hire Tang Rufus:</>';
 
-        $hireBlock = (new FormatterHelper())
+        $hireBlock = (new FormatterHelper)
             ->formatBlock(
                 [
                     'I am looking for my next role, freelance or full-time.',
@@ -117,14 +117,14 @@ class Application extends SymfonyConsoleApplication
                 'error',
                 true,
             );
-        $longVersion .= PHP_EOL . $hireBlock;
+        $longVersion .= PHP_EOL.$hireBlock;
 
         $sponsorUrl = sprintf(
             '%1$-15s <href=%2$s>%2$s</>',
             'Contact',
             'https://typist.tech/contact/',
         );
-        $longVersion .= PHP_EOL . PHP_EOL . $sponsorUrl;
+        $longVersion .= PHP_EOL.PHP_EOL.$sponsorUrl;
 
         return $longVersion;
     }
