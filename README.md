@@ -28,9 +28,7 @@
 ### Normalize Versions
 
 Normalizes a version string to be able to perform comparisons on it.
-This is a wrapper of the [
-`Composer\Semver\VersionParser::normalize()`](https://github.com/composer/semver/blob/b52829022cb18210bb84e44e457bd4e890f8d2a7/src/VersionParser.php#L98-L108)
-method.
+This is a wrapper of the [`Composer\Semver\VersionParser::normalize()`](https://github.com/composer/semver/blob/b52829022cb18210bb84e44e457bd4e890f8d2a7/src/VersionParser.php#L98-L108) method.
 
 ```console
 $ composer-semver normalize '1.2-p.5+foo'
@@ -75,9 +73,7 @@ Help:
 ### Parse Constraints
 
 Parses a constraint string and strip its ignorable parts.
-This is a wrapper of the [
-`Composer\Semver\VersionParser::parseConstraints()`](github.com/composer/semver/blob/b52829022cb18210bb84e44e457bd4e890f8d2a7/src/VersionParser.php#L251-L258)
-method.
+This is a wrapper of the [`Composer\Semver\VersionParser::parseConstraints()`](github.com/composer/semver/blob/b52829022cb18210bb84e44e457bd4e890f8d2a7/src/VersionParser.php#L251-L258) method.
 
 ```console
 $ composer-semver parse '>=1.2 <2.0 || ~3.4.5 || ^6.7'
@@ -133,8 +129,8 @@ For shell completions, follow the instructions from:
 $ composer-semver completion --help
 ```
 
-If you installed `Composer SemVer` [via Homebrew](#homebrew-macos--linux-recommended), completion scripts are managed by
-Homebrew. Read more at https://docs.brew.sh/Shell-Completion
+If you installed `Composer SemVer` [via Homebrew](#homebrew-macos--linux-recommended), completion scripts are managed by Homebrew.
+Read more at https://docs.brew.sh/Shell-Completion
 
 ---
 
@@ -157,15 +153,11 @@ Homebrew. Read more at https://docs.brew.sh/Shell-Completion
 >
 > -- [Composer FAQ](https://getcomposer.org/doc/faqs/which-version-numbering-system-does-composer-itself-use.md)
 
-Under the hood, Composer uses [`composer/semver`](https://packagist.org/packages/composer/semver) to parse and validate
-versions.
+Under the hood, Composer uses [`composer/semver`](https://packagist.org/packages/composer/semver) to parse and validate versions.
 
-Despite the lie
-on [Composer FAQ](https://getcomposer.org/doc/faqs/which-version-numbering-system-does-composer-itself-use.md),
-the [fragmentary documentation](https://getcomposer.org/doc/articles/versions.md), and the deceitful package name
-`composer/semver`, Composer implements only a subset of [Semantic Versioning](https://semver.org/) specification while
-supports some uncommon versioning schemes. Working with Composer packages versions without `composer/semver` is a bit
-tricky.
+Despite the lie on [Composer FAQ](https://getcomposer.org/doc/faqs/which-version-numbering-system-does-composer-itself-use.md), the [fragmentary documentation](https://getcomposer.org/doc/articles/versions.md), and the deceitful package name `composer/semver`,
+Composer implements only a subset of [Semantic Versioning](https://semver.org/) specification while supports some uncommon versioning schemes.
+Working with Composer packages versions without `composer/semver` is a bit tricky.
 
 *"A bit tricky"* is an understatement.
 
@@ -220,16 +212,14 @@ curl -1sLf 'https://dl.cloudsmith.io/public/typisttech/oss/setup.deb.sh' | sudo 
 sudo apt-get install composer-version
 ```
 
-Instead of the automatic setup script, you can manually configure the repository with the instructsions
-on [Cloudsmith](https://cloudsmith.io/~typisttech/repos/oss/setup/#formats-deb).
+Instead of the automatic setup script, you can manually configure the repository with the instructions on [Cloudsmith](https://cloudsmith.io/~typisttech/repos/oss/setup/#formats-deb).
 
 ### Manual `.deb` (Debian based distributions, for example: Ubuntu)
 
 > [!WARNING]
 > If you install the `.deb` file manually, you have to take care of updating it by yourself.
 
-Download the latest `.deb` file from [GitHub Releases](https://github.com/typisttech/composer-semver/releases/latest),
-or via [`gh`](https://cli.github.com/):
+Download the latest `.deb` file from [GitHub Releases](https://github.com/typisttech/composer-semver/releases/latest), or via [`gh`](https://cli.github.com/):
 
 ```sh
 # Both arm64 (aarch64) and amd64 (x86_64) architectures are available.
@@ -253,9 +243,7 @@ sudo dpkg -i composer-semver_linux_arm64.deb
 > [!WARNING]
 > If you install the binary manually, you have to take care of updating it by yourself.
 
-Download the latest `.tar.gz` file
-from [GitHub Releases](https://github.com/typisttech/composer-semver/releases/latest), or via [
-`gh`](https://cli.github.com/):
+Download the latest `.tar.gz` file from [GitHub Releases](https://github.com/typisttech/composer-semver/releases/latest), or via [`gh`](https://cli.github.com/):
 
 ```sh
 # Both darwin (macOS) and linux operating systems are available.
@@ -286,17 +274,14 @@ mv composer-semver /usr/local/bin
 
 ## Credits
 
-[`Composer SemVer`](https://github.com/typisttech/composer-semver) is a [Typist Tech](https://typist.tech)
-project and maintained by [Tang Rufus](https://x.com/TangRufus), freelance
-developer [for hire](https://typist.tech/contact/).
+[`Composer SemVer`](https://github.com/typisttech/composer-semver) is a [Typist Tech](https://typist.tech) project and maintained by [Tang Rufus](https://x.com/TangRufus), freelance developer [for hire](https://typist.tech/contact/).
 
-Full list of contributors can be
-found [on GitHub](https://github.com/typisttech/composer-semver/graphs/contributors).
+Full list of contributors can be found [on GitHub](https://github.com/typisttech/composer-semver/graphs/contributors).
 
 ## Copyright and License
 
-This project is a [free software](https://www.gnu.org/philosophy/free-sw.en.html) distributed under the terms of
-the MIT license. For the full license, see [LICENSE](./LICENSE).
+This project is a [free software](https://www.gnu.org/philosophy/free-sw.en.html) distributed under the terms of the MIT license.
+For the full license, see [LICENSE](./LICENSE).
 
 ## Contribute
 
