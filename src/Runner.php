@@ -9,13 +9,14 @@ use Composer\Semver\VersionParser;
 class Runner
 {
     private const string NAME = 'Composer SemVer';
+
     private const string GIT_TAG = '@git-tag@';
 
     public static function run(): int
     {
         $app = new Application(self::NAME, self::GIT_TAG);
 
-        $parser = new VersionParser();
+        $parser = new VersionParser;
 
         $app->addCommands([
             new NormalizeCommand($parser),
