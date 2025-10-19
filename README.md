@@ -3,7 +3,7 @@
 # Composer SemVer
 
 [![GitHub Release](https://img.shields.io/github/v/release/typisttech/composer-semver)](https://github.com/typisttech/composer-semver/releases)
-[![CI](https://github.com/typisttech/composer-semver/actions/workflows/ci.yml/badge.svg)](https://github.com/typisttech/composer-semver/actions/workflows/test.yml)
+[![Test](https://github.com/typisttech/composer-semver/actions/workflows/test.yml/badge.svg)](https://github.com/typisttech/composer-semver/actions/workflows/test.yml)
 [![License](https://img.shields.io/github/license/typisttech/composer-semver.svg)](https://github.com/typisttech/composer-semver/blob/master/LICENSE)
 [![Follow @TangRufus on X](https://img.shields.io/badge/Follow-TangRufus-15202B?logo=x&logoColor=white)](https://x.com/tangrufus)
 [![Follow @TangRufus.com on Bluesky](https://img.shields.io/badge/Bluesky-TangRufus.com-blue?logo=bluesky)](https://bsky.app/profile/tangrufus.com)
@@ -233,19 +233,19 @@ or via [`gh`](https://cli.github.com/):
 
 ```sh
 # Both arm64 (aarch64) and amd64 (x86_64) architectures are available.
-gh release download --repo 'typisttech/composer-semver' --pattern 'composer-semver_Linux_arm64.deb'
+gh release download --repo 'typisttech/composer-semver' --pattern 'composer-semver_linux_arm64.deb'
 ```
 
 **Optionally**, verify the `.deb` file:
 
 ```sh
-gh attestation verify --repo 'typisttech/composer-semver' 'composer-semver_Linux_arm64.deb'
+gh attestation verify --repo 'typisttech/composer-semver' 'composer-semver_linux_arm64.deb'
 ```
 
 Finally, install the package:
 
 ```sh
-sudo dpkg -i composer-semver_Linux_arm64.deb
+sudo dpkg -i composer-semver_linux_arm64.deb
 ```
 
 ## Manual Binary
@@ -258,21 +258,21 @@ from [GitHub Releases](https://github.com/typisttech/composer-semver/releases/la
 `gh`](https://cli.github.com/):
 
 ```sh
-# Both Darwin (macOS) and Linux operating systems are available.
+# Both darwin (macOS) and linux operating systems are available.
 # Both arm64 (aarch64) and amd64 (x86_64) architectures are available.
-gh release download --repo 'typisttech/composer-semver' --pattern 'composer-semver_Darwin_arm64.tar.gz'
+gh release download --repo 'typisttech/composer-semver' --pattern 'composer-semver_darwin_arm64.tar.gz'
 ```
 
 **Optionally**, verify the `.tar.gz` file:
 
 ```sh
-gh attestation verify --repo 'typisttech/composer-semver' 'composer-semver_Darwin_arm64.tar.gz'
+gh attestation verify --repo 'typisttech/composer-semver' 'composer-semver_darwin_arm64.tar.gz'
 ```
 
 Finally, unarchive and move the binary into `$PATH`:
 
 ```sh
-tar -xvf 'composer-semver_Darwin_arm64.tar.gz'
+tar -xvf 'composer-semver_darwin_arm64.tar.gz'
 
 # Or, move it to any directory under `$PATH`
 mv composer-semver /usr/local/bin

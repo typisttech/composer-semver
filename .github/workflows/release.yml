@@ -77,12 +77,45 @@ jobs:
       contents: write
       actions: read
     steps:
+      - name: Set VERSION environment variable
+        run: echo VERSION="${TAGISH#v}" >> $GITHUB_ENV
+        env:
+          TAGISH: ${{ github.ref_type == 'tag' && github.ref_name || format('v0.0.0-{0}+{1}', github.run_number, github.sha) }}
+      - run: echo "${VERSION}"
+
+      - name: Download nfpm
+        run: gh release download --repo goreleaser/nfpm --pattern 'nfpm_*_amd64.deb' --output nfpm.deb
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Install nfpm
+        run: sudo dpkg -i nfpm.deb
+
+      - uses: actions/checkout@v5
+        with:
+          sparse-checkout: |
+            nfpm.yaml
+            README.md
+            LICENSE
+          sparse-checkout-cone-mode: false
       - uses: actions/download-artifact@v5
         with:
-          name: deb
-          path: deb
+          name: binaries
+          path: dist
           run-id: ${{ inputs.run_id }}
           github-token: ${{ github.token }}
+
+      - run: mkdir -p deb
+      - name: Create deb
+        run: |
+          for arch in ${ARCHS}; do
+            echo "::group::==> ${arch}"
+            DIST_DIR="dist/composer-semver_linux_${arch}" \
+            ARCH="${arch}" nfpm package --packager deb --target "deb/composer-semver_linux_${arch}.deb"
+            echo "::endgroup::"
+          done
+        env:
+          DIST_DIR: dist
+          ARCHS: "arm64 amd64"
 
       - uses: actions/attest-build-provenance@v3
         with:
@@ -117,8 +150,8 @@ jobs:
 
       - uses: actions/download-artifact@v5
         with:
-          pattern: composer-semver_*_*
-          path: bin
+          name: binaries
+          path: dist
           run-id: ${{ inputs.run_id }}
           github-token: ${{ github.token }}
 
@@ -131,7 +164,7 @@ jobs:
             dir=$(basename -a "${full_dir}")
             echo "${dir}" >> "$GITHUB_ENV"
             echo "::endgroup::"
-          done 3< <(find bin -maxdepth 2 -mindepth 2 -type f -name 'composer-semver' -print0)
+          done 3< <(find dist -maxdepth 2 -mindepth 2 -type f -name 'composer-semver' -print0)
           echo EOF >> "$GITHUB_ENV"
       - run: echo "${BIN_DIRS}"
 
@@ -140,9 +173,9 @@ jobs:
         run: |
           while read -u3 -r bin_dir; do
             echo "::group::==> ${bin_dir}"
-            cp README.md LICENSE "bin/${bin_dir}/"
-            chmod +x "bin/${bin_dir}/composer-semver" && \
-            tar -C "bin/${bin_dir}" -cvf - composer-semver README.md LICENSE | \
+            cp README.md LICENSE "dist/${bin_dir}/"
+            chmod +x "dist/${bin_dir}/composer-semver" && \
+            tar -C "dist/${bin_dir}" -cvf - composer-semver README.md LICENSE | \
             gzip --best - > "tarball/${bin_dir}.tar.gz"
             echo "::endgroup::"
           done 3< <(echo "${BIN_DIRS}")
