@@ -60,7 +60,7 @@ jobs:
           REPO: ${{ github.repository }}
           GH_TOKEN: ${{ github.token }}
 
-      - uses: release-drafter/release-drafter@v6
+      - uses: release-drafter/release-drafter@v7
         with:
           version: ${{ inputs.version }}
           tag: ${{ inputs.version }}
