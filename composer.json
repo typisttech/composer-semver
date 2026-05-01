@@ -37,6 +37,7 @@
   },
   "require-dev": {
     "laravel/pao": "^1.0",
+    "mrpunyapal/peststan": "^0.2.9",
     "pestphp/pest": "^4.6",
     "phpstan/extension-installer": "^1.4",
     "phpstan/phpstan": "^2.1",
