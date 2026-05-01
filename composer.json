@@ -48,6 +48,11 @@
       "TypistTech\\ComSem\\": "src/"
     }
   },
+    "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
   "bin": [
     "bin/comsem"
   ],
