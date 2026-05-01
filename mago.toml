@@ -23,19 +23,27 @@ ambiguous-function-call = { enabled = false }
 literal-named-argument = { enabled = false }
 halstead = { effort-threshold = 7000 }
 
+# https://mago.carthage.software/tools/analyzer/configuration-reference#strict-mode
 [analyzer]
-plugins = []
-find-unused-definitions = true
+# Enable all checks
 find-unused-expressions = true
+find-unused-definitions = true
+find-overly-wide-return-types = true
 analyze-dead-code = true
-memoize-properties = true
-allow-possibly-undefined-array-keys = false
-check-throws = true
-unchecked-exceptions = ["Error", "LogicException"]
-unchecked-exception-classes = []
+check-throws = false # Do not check for missing @throws annotations.
 check-missing-override = true
 find-unused-parameters = true
+check-missing-type-hints = true
+check-closure-missing-type-hints = true
+check-arrow-function-missing-type-hints = true
+enforce-class-finality = true
+require-api-or-internal = false # Do not require @api nor or @internal annotations.
+check-experimental = true
+
+# Enable strict checks
 strict-list-index-checks = true
 no-boolean-literal-comparison = true
-check-missing-type-hints = true
-register-super-globals = true
+
+# Disable lenient behaviors
+allow-possibly-undefined-array-keys = false
+trust-existence-checks = false
