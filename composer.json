@@ -66,10 +66,7 @@
     "sort-packages": true
   },
   "scripts": {
-    "fmt": [
-      "mago lint --fix",
-      "mago fmt"
-    ],
+    "fmt": "mago fmt",
     "fmt:composer": "@composer normalize",
     "lint": [
       "mago analyze",
@@ -77,6 +74,11 @@
       "mago fmt --check",
       "phpstan analyse"
     ],
-    "lint:composer": "@composer normalize --dry-run"
+    "lint:composer": "@composer normalize --dry-run",
+    "lint:fix": [
+      "mago analyse --fix",
+      "mago lint --fix",
+      "@fmt"
+    ]
   }
 }
