@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "17e76ad93d8fce894a0ea96c6b0c28ea",
+    "content-hash": "4ee3ef3b925e208ec50e9b0ea87727df",
     "packages": [
         {
             "name": "composer/semver",
-            "version": "3.4.4",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/semver.git",
-                "reference": "198166618906cb2de69b95d7d47e5fa8aa1b2b95"
+                "reference": "09af5e85b5f1380e4e098dde28950e2549cba4ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/198166618906cb2de69b95d7d47e5fa8aa1b2b95",
-                "reference": "198166618906cb2de69b95d7d47e5fa8aa1b2b95",
+                "url": "https://api.github.com/repos/composer/semver/zipball/09af5e85b5f1380e4e098dde28950e2549cba4ed",
+                "reference": "09af5e85b5f1380e4e098dde28950e2549cba4ed",
                 "shasum": ""
             },
             "require": {
@@ -27,6 +27,7 @@
                 "phpstan/phpstan": "^1.11",
                 "symfony/phpunit-bridge": "^3 || ^7"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -59,7 +60,7 @@
                     "homepage": "http://robbast.nl"
                 }
             ],
-            "description": "Semver library that offers utilities, version constraint parsing and validation.",
+            "description": "Version comparison library that offers utilities, version constraint parsing and validation.",
             "keywords": [
                 "semantic",
                 "semver",
@@ -69,7 +70,7 @@
             "support": {
                 "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/semver/issues",
-                "source": "https://github.com/composer/semver/tree/3.4.4"
+                "source": "https://github.com/composer/semver/tree/main"
             },
             "funding": [
                 {
@@ -81,7 +82,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-08-20T19:15:30+00:00"
+            "time": "2026-04-08T19:56:27+00:00"
         },
         {
             "name": "psr/container",
@@ -4323,7 +4324,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "composer/semver": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
