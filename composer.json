@@ -50,7 +50,7 @@
       "TypistTech\\ComSem\\": "src/"
     }
   },
-    "autoload-dev": {
+  "autoload-dev": {
     "psr-4": {
       "Tests\\": "tests/"
     }
@@ -64,5 +64,19 @@
       "phpstan/extension-installer": true
     },
     "sort-packages": true
+  },
+  "scripts": {
+    "fmt": [
+      "mago lint --fix",
+      "mago fmt"
+    ],
+    "fmt:composer": "@composer normalize",
+    "lint": [
+      "mago analyze",
+      "mago lint",
+      "mago fmt --check",
+      "phpstan analyse"
+    ],
+    "lint:composer": "@composer normalize --dry-run"
   }
 }
