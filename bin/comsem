@@ -9,7 +9,6 @@ use const PHP_EOL;
 use const PHP_SAPI;
 
 use function in_array;
-use function is_string;
 
 // Taken from https://box-project.github.io/box/faq/#what-is-the-canonical-way-to-write-a-cli-entry-file
 if (!in_array(PHP_SAPI, ['micro', 'cli', 'phpdbg', 'embed'], true)) {
@@ -17,10 +16,6 @@ if (!in_array(PHP_SAPI, ['micro', 'cli', 'phpdbg', 'embed'], true)) {
     exit(1);
 }
 
-if (isset($_composer_autoload_path) && is_string($_composer_autoload_path)) {
-    include $_composer_autoload_path;
-} else {
-    include __DIR__ . '/../vendor/autoload.php';
-}
+include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
-exit(Runner::run());
+Runner::run();
