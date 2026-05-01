@@ -35,11 +35,11 @@ The first six commands must return `Command::SUCCESS` and print JSON success pay
 - [x] (2026-05-01 01:45Z) Re-inspected the repository after the user's updates and confirmed that Pest is now set up, `phpunit.xml` exists, `tests/Pest.php` and example tests exist, and `vendor/bin/pest` currently passes.
 - [x] (2026-05-01 01:45Z) Inspected `Composer\Semver\VersionParser` usage and confirmed the current method surface in this repository: static methods `parseStability()` and `normalizeStability()`, and instance methods `isValid()`, `normalize()`, `parseNumericAliasPrefix()`, `normalizeBranch()`, `normalizeDefaultBranch()`, and `parseConstraints()`.
 - [x] (2026-05-01 01:45Z) Updated this ExecPlan to add the parser command family, align with the repo's real Pest setup, use correct instance-method wording for `VersionParser::isValid()` and `VersionParser::normalize()`, and incorporate the final design-review recommendations around `OutputInterface`, stdout-only JSON routing, permissive behavior documentation, and test placement.
-- [ ] Implement `src/Application.php` and `src/Runner.php` so `bin/comsem` stops fatalling and the application can be constructed in tests without auto-exit.
-- [ ] Implement the shared JSON command base class and the thirteen custom command classes under `src/Command/Comparator/`, `src/Command/Semver/`, and `src/Command/Parser/`.
-- [ ] Add Pest coverage, test helpers, and static-analysis configuration so `bin/`, `src/`, and `tests/` are all exercised.
-- [ ] Update `mago.toml` so Mago covers `bin/`, `src/`, and `tests/` instead of only `src/`.
-- [ ] Run the full validation sequence described in this plan and record the results in this section when implementation begins.
+- [x] (2026-05-01 04:39Z) Implemented `src/Application.php` and `src/Runner.php`, restored a working Symfony Console application in `bin/comsem`, and added `Runner::buildApplication()` so feature tests can construct the application with auto-exit disabled.
+- [x] (2026-05-01 04:39Z) Implemented the shared `JsonCommand` base class and all thirteen custom command classes under `src/Command/Comparator/`, `src/Command/Semver/`, and `src/Command/Parser/`, including stdout-only JSON success and failure handling through one raw-output `writeJson()` path.
+- [x] (2026-05-01 04:39Z) Replaced scaffold tests with Pest feature coverage for comparator, semver, parser, and default Symfony behavior; added `tests/Support/cli.php`; and added `phpstan.neon` so `bin`, `src`, and `tests` are all analyzed.
+- [x] (2026-05-01 04:39Z) Updated `mago.toml` so Mago covers `bin/`, `src/`, and `tests/`, and moved the PHP bootstrap body into `bin/comsem.php` so Mago 1.25.x can scan the executable logic while `bin/comsem` remains the thin entrypoint.
+- [x] (2026-05-01 04:39Z) Ran the validation sequence and recorded the results: `composer dump-autoload`, targeted CLI smoke tests, `vendor/bin/pest`, `vendor/bin/phpstan analyse`, `mago list-files`, `mago format --check`, `mago lint`, and `mago analyze` all completed successfully. `mago analyze` still prints informational invalid-UTF8 notices from vendor includes, but reports `No issues found` for the project code.
 
 ## Surprises & Discoveries
 
@@ -69,6 +69,9 @@ The first six commands must return `Command::SUCCESS` and print JSON success pay
 
 - Observation: `VersionParser::parseStability()` is permissive and does not behave like a strict validator. Inputs like `dev-main` and even `not-a-version` still produce successful stability strings rather than runtime errors.
   Evidence: current local behavior checks show `parseStability('1.0.0-beta2') === 'beta'`, `parseStability('dev-main') === 'dev'`, and `parseStability('not-a-version') === 'stable'`.
+
+- Observation: Mago 1.25.x does not include extensionless PHP executables like `bin/comsem` in `mago list-files`, even when the path is explicit and `extensions = ["php", ""]` is configured.
+  Evidence: local investigation showed `mago list-files` skipped `bin/comsem` while `mago ast bin/comsem` could parse it, and moving the implementation into `bin/comsem.php` made the executable logic visible to Mago while preserving the thin wrapper entrypoint.
 
 ## Decision Log
 
@@ -170,9 +173,11 @@ The first six commands must return `Command::SUCCESS` and print JSON success pay
 
 ## Outcomes & Retrospective
 
-At plan-authoring time, the repository is still intentionally unimplemented. The important outcome so far is that the scope is no longer ambiguous. The command surface is now thirteen custom commands, the JSON envelope is fixed, the exit-code contract is fixed, the boundary between custom commands and default Symfony features is fixed, the repo's real Pest setup is accounted for, and the behavior differences between `Comparator`, `Semver`, and `VersionParser` have already been researched.
+The repository now ships a working Symfony Console application in `bin/comsem` with thirteen custom JSON commands covering the planned `Comparator`, `Semver`, and selected `VersionParser` APIs. Custom commands emit exactly one compact JSON object to stdout on both success and failure, preserve Composer's permissive comparator and parser behaviors where required, and leave Symfony defaults such as `--help`, `--version`, `help`, `list`, and completion as normal text-based commands.
 
-No implementation work has started yet. The next contributor should be able to follow this file from top to bottom, create the named files, run the named commands, and arrive at a working CLI without needing to inspect prior chats or reverse-engineer the intent.
+The implementation also includes end-to-end Pest coverage, PHPStan configuration, and Mago coverage for the executable bootstrap, source files, and tests. The one tooling surprise discovered during implementation was that Mago 1.25.x does not enumerate extensionless PHP entrypoints in `mago list-files`; the repository now works around that by keeping `bin/comsem` as the executable shell wrapper while placing the real PHP bootstrap logic in `bin/comsem.php`, which Mago can scan and format.
+
+Validation is complete: smoke tests, Pest, PHPStan, `mago format --check`, `mago lint`, and `mago analyze` all pass. The only remaining non-project output during validation is informational invalid-UTF8 noise from vendor files included for analysis context by Mago.
 
 ## Context and Orientation
 
@@ -444,7 +449,7 @@ If a custom command writes more than one line, adds leading whitespace, or omits
 
 If JSON output loses substrings that look like Symfony formatter tags such as `<info>`, inspect the raw-output setting next. JSON payloads must be written with `OutputInterface::OUTPUT_RAW` so formatter parsing does not rewrite valid JSON string content.
 
-If `mago format --check`, `mago lint`, or `mago analyze` appear to ignore `bin/comsem` or the new tests, run `mago list-files` immediately. Do not trust passing Mago results until `mago list-files` proves the relevant files are included.
+If `mago format --check`, `mago lint`, or `mago analyze` appear to ignore the executable bootstrap or the new tests, run `mago list-files` immediately. In Mago 1.25.x, extensionless PHP entrypoints are not enumerated, so this repository keeps the executable wrapper in `bin/comsem` and the scanable bootstrap logic in `bin/comsem.php`.
 
 If Pest cannot find the suite, confirm that `tests/Pest.php`, `tests/TestCase.php`, and `phpunit.xml` all still exist and that the `tests/` directory is present. If PHPStan reports unknown Pest helpers in tests, confirm that `phpstan.neon` includes both `vendor/pestphp/pest/extension.neon` and `vendor/pestphp/pest/phpstan-pest-extension.neon`.
 
@@ -452,7 +457,7 @@ No rollback strategy should involve destructive Git commands. The safe retry pat
 
 ## Artifacts and Notes
 
-Current pre-implementation failure state:
+Historical pre-implementation failure state:
 
     $ php bin/comsem --help
     PHP Fatal error:  Uncaught Error: Class "TypistTech\ComSem\Runner" not found in ~/Code/comsem/bin/comsem:21
@@ -575,3 +580,5 @@ The only external runtime libraries that should be used directly by the implemen
 2026-05-01 / OpenCode: Revised the ExecPlan after the repository gained a working Pest scaffold and the requested scope expanded to three `VersionParser` commands. This revision also updates the wording so `parseStability()` is described as a static helper while `normalize()` and `isValid()` are described as instance-method wrappers using a constructed `VersionParser` object.
 
 2026-05-01 / OpenCode: Final pre-implementation revision after the dependency was updated and the latest design constraints were clarified. This revision records the current `VersionParser` static-versus-instance method split from the installed dependency, switches command signatures back to `OutputInterface` per user direction, routes both success and failure JSON to stdout through one shared `writeJson()` helper, requires `writeJson()` to be the only JSON serializer/output path and to append exactly one trailing newline, uses Symfony `Command::*` constants as the implementation-level exit-code convention, requires raw output mode for JSON writes so Symfony formatter tags cannot corrupt payloads, documents Composer's permissive parser behaviors as required acceptance criteria, and tightens the Pest testing guidance to keep CLI tests under `tests/Feature` while leaving the existing bootstrap mostly untouched.
+
+2026-05-01 / OpenCode: Implementation-complete revision. This revision marks the execution items as done, records the passing validation sequence, documents the Mago 1.25.x limitation around extensionless PHP entrypoints, and notes the repository workaround of keeping `bin/comsem` as a thin executable wrapper while moving the scanable PHP bootstrap into `bin/comsem.php`.
