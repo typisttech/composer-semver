@@ -63,7 +63,6 @@
       "pestphp/pest-plugin": true,
       "phpstan/extension-installer": true
     },
-    "platform-check": false,
     "sort-packages": true
   }
 }
