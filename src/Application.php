@@ -22,31 +22,22 @@ final class Application extends SymfonyConsoleApplication
     {
         return implode(PHP_EOL, [
             sprintf('%s %s', $this->getName(), $this->getVersion()),
-            sprintf('composer/semver %s', self::packageVersion('composer/semver')),
-            sprintf('symfony/console %s', self::packageVersion('symfony/console')),
+            sprintf('composer/semver %s', InstalledVersions::getPrettyVersion('composer/semver') ?? 'UNKNOWN'),
+            sprintf('symfony/console %s', InstalledVersions::getPrettyVersion('symfony/console') ?? 'UNKNOWN'),
             sprintf('PHP %s (%s)', PHP_VERSION, PHP_SAPI)
         ]);
     }
 
-    /**
-     * @throws Throwable
-     */
     #[\Override]
     protected function doRunCommand(Command $command, InputInterface $input, OutputInterface $output): int
     {
-        if (!$command instanceof JsonCommand) {
-            return parent::doRunCommand($command, $input, $output);
-        }
-
         try {
             return parent::doRunCommand($command, $input, $output);
         } catch (Throwable $throwable) {
-            return $command->renderFailure($throwable, $output);
+            if ($command instanceof JsonCommand) {
+                return $command->writeFailure($output, $throwable);
+            }
+            throw $throwable;
         }
-    }
-
-    private static function packageVersion(string $packageName): string
-    {
-        return InstalledVersions::getPrettyVersion($packageName) ?? 'UNKNOWN';
     }
 }

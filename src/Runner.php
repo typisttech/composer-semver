@@ -22,45 +22,38 @@ use TypistTech\ComSem\Command\Semver\SortCommand;
 
 final class Runner
 {
-    private const string NAME = 'comsem';
-    private const string UNKNOWN_VERSION = 'UNKNOWN';
+    /** @var class-string<Command>[]  */
+    private const array COMMANDS = [
+        GreaterThanCommand::class,
+        GreaterThanOrEqualToCommand::class,
+        LessThanCommand::class,
+        LessThanOrEqualToCommand::class,
+        EqualToCommand::class,
+        NotEqualToCommand::class,
+        SatisfiesCommand::class,
+        SatisfiedByCommand::class,
+        SortCommand::class,
+        RSortCommand::class,
+        ParseStabilityCommand::class,
+        IsValidCommand::class,
+        NormalizeCommand::class
+    ];
 
     public static function buildApplication(): Application
     {
-        $application = new Application(self::NAME, self::version());
-        $application->addCommands(self::commands());
+        $application = new Application('comsem', self::version());
+
+        foreach (self::COMMANDS as $command) {
+            // @mago-expect analysis:unsafe-instantiation
+            $application->addCommand(new $command());
+        }
 
         return $application;
     }
 
-    /**
-     * @throws \Exception
-     */
     public static function run(): int
     {
         return self::buildApplication()->run();
-    }
-
-    /**
-     * @return list<Command>
-     */
-    private static function commands(): array
-    {
-        return [
-            new GreaterThanCommand(),
-            new GreaterThanOrEqualToCommand(),
-            new LessThanCommand(),
-            new LessThanOrEqualToCommand(),
-            new EqualToCommand(),
-            new NotEqualToCommand(),
-            new SatisfiesCommand(),
-            new SatisfiedByCommand(),
-            new SortCommand(),
-            new RSortCommand(),
-            new ParseStabilityCommand(),
-            new IsValidCommand(),
-            new NormalizeCommand()
-        ];
     }
 
     private static function version(): string
@@ -75,6 +68,6 @@ final class Runner
             return $rootPackage['version'];
         }
 
-        return self::UNKNOWN_VERSION;
+        return 'UNKNOWN';
     }
 }

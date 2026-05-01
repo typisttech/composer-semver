@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace TypistTech\ComSem\Command;
 
-use LogicException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,9 +25,9 @@ abstract class JsonCommand extends Command
         return Command::SUCCESS;
     }
 
-    final public function renderFailure(Throwable $throwable, OutputInterface $output): int
+    final public function writeFailure(OutputInterface $output, Throwable $throwable): int
     {
-        $isUsageThrowable = self::isUsageThrowable($throwable);
+        $isUsageThrowable = $throwable instanceof ExceptionInterface;
 
         $this->writeJson($output, [
             'ok' => false,
@@ -43,11 +42,6 @@ abstract class JsonCommand extends Command
         return $isUsageThrowable ? Command::INVALID : Command::FAILURE;
     }
 
-    final protected static function isUsageThrowable(Throwable $throwable): bool
-    {
-        return $throwable instanceof ExceptionInterface;
-    }
-
     /**
      * @param array<string, mixed> $payload
      */
@@ -55,11 +49,11 @@ abstract class JsonCommand extends Command
     {
         $json = json_encode($payload, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES);
 
-        $output->write($json . PHP_EOL, false, OutputInterface::OUTPUT_RAW);
+        $output->write($json, true, OutputInterface::OUTPUT_RAW);
     }
 
     private function commandName(): string
     {
-        return $this->getName() ?? throw new LogicException('Command name is not available.');
+        return $this->getName() ?? throw new \LogicException('Command name is not available.');
     }
 }
