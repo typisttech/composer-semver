@@ -18,10 +18,12 @@ The final implementation must make these examples work from the repository root 
     php bin/comsem parser:parse-stability 1.0.0-beta2
     php bin/comsem parser:is-valid 1.0.0
     php bin/comsem parser:normalize v1.2.3
+    php bin/comsem parser:parse-stability dev-main
+    php bin/comsem parser:parse-stability not-a-version
     php bin/comsem semver:sort 1.0.0 not-a-version
     php bin/comsem semver:sort
 
-The first three commands must exit `0` and print JSON success payloads. The fourth command must exit `1` and print a JSON runtime error because `Composer\Semver\Semver::sort()` rejects malformed versions. The fifth command must exit `2` and print a JSON usage error because the user invoked a valid custom command without the required array argument.
+The first six commands must exit `0` and print JSON success payloads. `parser:parse-stability dev-main` must return `dev`, and `parser:parse-stability not-a-version` must still return a successful JSON payload with `stable`, documenting Composer's permissive parser behavior. `semver:sort 1.0.0 not-a-version` must exit `1` and print a JSON runtime error because `Composer\Semver\Semver::sort()` rejects malformed versions. `semver:sort` with no arguments must exit `2` and print a JSON usage error because the user invoked a valid custom command without the required array argument.
 
 ## Progress
 
@@ -31,8 +33,8 @@ The first three commands must exit `0` and print JSON success payloads. The four
 - [x] (2026-05-01 00:57Z) Enumerated the original in-scope API surface from `vendor/composer/semver/README.md`: six documented `Composer\Semver\Comparator` methods and four documented `Composer\Semver\Semver` methods. Confirmed that `Composer\Semver\Intervals` methods are intentionally out of scope.
 - [x] (2026-05-01 00:57Z) Resolved the output-contract boundary after the user clarification: only custom commands added by this project must follow the JSON and exit-code rules; Symfony defaults remain untouched.
 - [x] (2026-05-01 01:45Z) Re-inspected the repository after the user's updates and confirmed that Pest is now set up, `phpunit.xml` exists, `tests/Pest.php` and example tests exist, and `vendor/bin/pest` currently passes.
-- [x] (2026-05-01 01:45Z) Inspected `Composer\Semver\VersionParser` usage and confirmed that the parser commands need mixed call styles: `parseStability()` is static, while `normalize()` and `isValid()` are instance methods and therefore must be wrapped through a `new VersionParser()` instance.
-- [x] (2026-05-01 01:45Z) Updated this ExecPlan to add the parser command family, align with the repo's real Pest setup, and use correct instance-method wording for `VersionParser::isValid()` and `VersionParser::normalize()`.
+- [x] (2026-05-01 01:45Z) Inspected `Composer\Semver\VersionParser` usage and confirmed the current method surface in this repository: static methods `parseStability()` and `normalizeStability()`, and instance methods `isValid()`, `normalize()`, `parseNumericAliasPrefix()`, `normalizeBranch()`, `normalizeDefaultBranch()`, and `parseConstraints()`.
+- [x] (2026-05-01 01:45Z) Updated this ExecPlan to add the parser command family, align with the repo's real Pest setup, use correct instance-method wording for `VersionParser::isValid()` and `VersionParser::normalize()`, and incorporate the final design-review recommendations around `SymfonyStyle`, stderr routing, permissive behavior documentation, and test placement.
 - [ ] Implement `src/Application.php` and `src/Runner.php` so `bin/comsem` stops fatalling and the application can be constructed in tests without auto-exit.
 - [ ] Implement the shared JSON command base class and the thirteen custom command classes under `src/Command/Comparator/`, `src/Command/Semver/`, and `src/Command/Parser/`.
 - [ ] Add Pest coverage, test helpers, and static-analysis configuration so `bin/`, `src/`, and `tests/` are all exercised.
@@ -62,8 +64,11 @@ The first three commands must exit `0` and print JSON success payloads. The four
 - Observation: Symfony Console's built-in `Application` class handles `--version`, `--help`, default exception rendering, and default commands as text-first behaviors.
   Evidence: `vendor/symfony/console/Application.php` prints `getLongVersion()` for `--version`, reroutes `--help` to the built-in `help` command, and renders uncaught exceptions with formatted text blocks in `renderThrowable()`.
 
-- Observation: the parser commands require mixed invocation styles. `Composer\Semver\VersionParser::parseStability()` is static, while `VersionParser::normalize()` and `VersionParser::isValid()` are instance methods and should be wrapped through a constructed parser object.
-  Evidence: the correct usage is `use Composer\Semver\VersionParser; $parser = new VersionParser(); $parser->isValid('1.2.3');`, and the current local behavior check already showed `normalize()` being called through a `new VersionParser()` instance.
+- Observation: the current installed `VersionParser` surface mixes static and instance methods. `parseStability()` and `normalizeStability()` are static, while `isValid()`, `normalize()`, `parseNumericAliasPrefix()`, `normalizeBranch()`, `normalizeDefaultBranch()`, and `parseConstraints()` are instance methods.
+  Evidence: reflecting `Composer\Semver\VersionParser` in this repository prints `static parseStability`, `static normalizeStability`, `instance isValid`, `instance normalize`, `instance parseNumericAliasPrefix`, `instance normalizeBranch`, `instance normalizeDefaultBranch`, and `instance parseConstraints`.
+
+- Observation: `VersionParser::parseStability()` is permissive and does not behave like a strict validator. Inputs like `dev-main` and even `not-a-version` still produce successful stability strings rather than runtime errors.
+  Evidence: current local behavior checks show `parseStability('1.0.0-beta2') === 'beta'`, `parseStability('dev-main') === 'dev'`, and `parseStability('not-a-version') === 'stable'`.
 
 ## Decision Log
 
@@ -83,6 +88,10 @@ The first three commands must exit `0` and print JSON success payloads. The four
   Rationale: the user explicitly exempted default features from the custom JSON and exit-code contract, so replacing them with a project-specific JSON layer would add risk without solving a requested problem.
   Date/Author: 2026-05-01 / OpenCode
 
+- Decision: invokable commands in this project should depend on `SymfonyStyle` rather than `OutputInterface` directly.
+  Rationale: this matches the project's accepted convention for Symfony Console 8 invokable commands, works with Symfony's invokable-command autowiring, and gives commands a single ergonomic dependency while still allowing access to the correct output stream objects when needed.
+  Date/Author: 2026-05-01 / OpenCode
+
 - Decision: every custom command success payload uses the same JSON envelope: `{"ok":true,"command":"<name>","result":<json-value>}`.
   Rationale: a stable top-level shape makes shell and programmatic consumption consistent across all commands while still allowing scalar booleans and arrays.
   Date/Author: 2026-05-01 / OpenCode
@@ -95,8 +104,16 @@ The first three commands must exit `0` and print JSON success payloads. The four
   Rationale: this follows normal CLI conventions and aligns with `clig.dev` guidance for script-friendly tools.
   Date/Author: 2026-05-01 / OpenCode
 
+- Decision: when writing failure JSON, use the error output stream from `ConsoleOutputInterface` when available instead of assuming the injected output object already targets standard error.
+  Rationale: this makes the stdout/stderr contract reliable in real CLI execution and in tests where `ApplicationTester` captures the two streams separately.
+  Date/Author: 2026-05-01 / OpenCode
+
 - Decision: implement a shared abstract `JsonCommand` base class for all custom commands, and make the custom `Application` subclass intercept exceptions only for that base class.
   Rationale: usage errors for valid custom commands happen inside Symfony input binding, which means application-level interception is required. Scoping the interception to the shared base class preserves normal Symfony behavior for built-in commands.
+  Date/Author: 2026-05-01 / OpenCode
+
+- Decision: keep using Symfony's invokable-command convention for this project and design the command classes around `__invoke()` plus Symfony attributes.
+  Rationale: this matches the established project convention and the user explicitly approved the coupling to Symfony's invokable-command behavior.
   Date/Author: 2026-05-01 / OpenCode
 
 - Decision: classify any throwable implementing `Symfony\Component\Console\Exception\ExceptionInterface` as a custom-command usage error and map it to exit code `2`; classify every other throwable as a runtime error and map it to exit code `1`.
@@ -105,6 +122,10 @@ The first three commands must exit `0` and print JSON success payloads. The four
 
 - Decision: do not pre-validate comparator command inputs before calling the wrapped library.
   Rationale: the wrapper should preserve the documented API behavior. Research showed that comparator methods can return booleans even for malformed strings, and the CLI should expose that behavior instead of silently redefining it.
+  Date/Author: 2026-05-01 / OpenCode
+
+- Decision: follow `composer/semver` permissive behaviors for parser commands as well, and document them explicitly in tests and examples.
+  Rationale: `parseStability()` is not a strict validator. The CLI should surface the library's actual behavior rather than rewriting it into a stricter contract than Composer itself provides.
   Date/Author: 2026-05-01 / OpenCode
 
 - Decision: represent list inputs as repeated positional arguments, not comma-delimited strings and not JSON strings.
@@ -127,8 +148,8 @@ The first three commands must exit `0` and print JSON success payloads. The four
   Rationale: the user explicitly clarified that `isValid()` is an instance method and asked for the plan wording to reflect that instead of using static `::` phrasing where it would be misleading.
   Date/Author: 2026-05-01 / OpenCode
 
-- Decision: update the testing plan to build on the existing Pest scaffold instead of replacing it.
-  Rationale: the repository now already has `tests/Pest.php`, `tests/TestCase.php`, example tests, and `phpunit.xml`. The smallest correct next step is to adapt and extend that setup, not reinvent it.
+- Decision: update the testing plan to build on the existing Pest scaffold instead of replacing it, keep CLI behavior tests under `tests/Feature`, and only edit `tests/Pest.php` or `tests/TestCase.php` when the implementation actually needs it.
+  Rationale: the repository already has a valid Pest bootstrap and the user explicitly asked to keep CLI tests under `tests/Feature`. The smallest correct approach is to add tests in the requested locations and leave the global bootstrap alone unless a concrete need appears.
   Date/Author: 2026-05-01 / OpenCode
 
 - Decision: do not add `phpunit`, `phpunit.xml`, or PHPUnit-style test classes.
@@ -170,6 +191,7 @@ The key repository files and directories relevant to this work are these:
 - `vendor/composer/semver/README.md`, which defines the exact command scope.
 - `vendor/composer/semver/src/Comparator.php`, `vendor/composer/semver/src/Semver.php`, and `vendor/composer/semver/src/VersionParser.php`, which define the wrapped runtime behavior.
 - `vendor/symfony/console/Application.php`, which defines how Symfony handles `--help`, `--version`, default commands, and input-binding exceptions.
+- `vendor/symfony/console/Style/SymfonyStyle.php`, which this project should use as the primary invokable command dependency.
 
 The reference project at `/Users/work/Code/composer-semver` matters only for conventions. The conventions that should be copied are already stated here: thin `bin/` bootstrap, dedicated `Application`, dedicated `Runner`, attribute-based commands, strict types everywhere, and small command classes that delegate to the underlying library.
 
@@ -193,6 +215,11 @@ The custom commands that must exist at the end of implementation are exactly the
 
 Do not add wrappers for `Composer\Semver\Intervals`. Do not add wrappers for `Comparator::compare()` or for any other `VersionParser` methods such as `normalizeBranch()`, `normalizeDefaultBranch()`, `parseConstraints()`, `parseNumericAliasPrefix()`, or `normalizeStability()`.
 
+Method-kind clarification for the current installed `VersionParser` in this repository:
+
+- Static methods: `parseStability()`, `normalizeStability()`.
+- Instance methods: `isValid()`, `normalize()`, `parseNumericAliasPrefix()`, `normalizeBranch()`, `normalizeDefaultBranch()`, `parseConstraints()`.
+
 ### Required JSON Contract For Custom Commands
 
 Every successful custom command must emit one compact JSON object followed by a trailing newline on standard output. The required top-level shape is:
@@ -207,7 +234,7 @@ Every failed custom command must emit one compact JSON object followed by a trai
 
 For usage failures on valid custom commands, the `category` value must be `usage` and the exit code must be `2`. For all other custom-command failures, the `category` value must be `runtime` and the exit code must be `1`.
 
-The commands must not emit pretty-printed JSON, ANSI formatting, banners, blank leading lines, or human-only prose around the JSON payload. Use `json_encode()` with `JSON_THROW_ON_ERROR` and `JSON_UNESCAPED_SLASHES`. If a payload cannot be encoded, that is a programmer bug and should not be silently hidden.
+The commands must not emit pretty-printed JSON, ANSI formatting, banners, blank leading lines, or human-only prose around the JSON payload. Use `json_encode()` with `JSON_THROW_ON_ERROR` and `JSON_UNESCAPED_SLASHES`. Write JSON using raw output mode so Symfony's formatter does not interpret tag-like substrings such as `<info>` inside JSON strings. If a payload cannot be encoded, that is a programmer bug and should not be silently hidden.
 
 ### Default Symfony Behavior That Must Remain Available
 
@@ -237,7 +264,7 @@ The proof for this milestone is that `semver:satisfies`, `semver:satisfied-by`, 
 
 The fourth milestone adds the three requested `VersionParser` wrappers. At the end of this milestone, `parser:parse-stability` must call the static parser helper, while `parser:normalize` and `parser:is-valid` must call the corresponding instance methods on a constructed `VersionParser` object.
 
-The proof for this milestone is that `parser:parse-stability 1.0.0-beta2` returns `beta`, `parser:normalize v1.2.3` returns `1.2.3.0`, malformed input to `parser:normalize` returns a JSON runtime error, and `parser:is-valid` uses `$parser->isValid($version)` rather than static-style wording or custom reimplementation.
+The proof for this milestone is that `parser:parse-stability 1.0.0-beta2` returns `beta`, `parser:parse-stability dev-main` returns `dev`, `parser:parse-stability not-a-version` still returns a successful `stable` result, `parser:normalize v1.2.3` returns `1.2.3.0`, malformed input to `parser:normalize` returns a JSON runtime error, and `parser:is-valid` uses `$parser->isValid($version)` rather than static-style wording or custom reimplementation.
 
 ### Milestone 5: Add Tooling Coverage And End-To-End Verification
 
@@ -251,19 +278,21 @@ Create `src/Application.php` as `final class Application extends Symfony\Compone
 
 Create `src/Runner.php` as the single bootstrap and registration point. It must expose `public static function buildApplication(): Application` and `public static function run(): int`. `buildApplication()` must instantiate the custom `Application`, set the application name to `comsem`, derive the version from `Composer\InstalledVersions::getRootPackage()`, register all thirteen custom commands with `addCommands()`, and return the application. `run()` must call `buildApplication()->run()`. The existing `bin/comsem` file should remain as a thin wrapper that loads the autoloader and calls `Runner::run()`.
 
-Create `src/Command/JsonCommand.php` as the shared abstract base class for every custom command. This class must extend `Symfony\Component\Console\Command\Command` and must centralize the JSON envelope, output-stream selection, newline handling, and exit-code mapping. It must provide one success helper for subclasses and one failure-rendering method callable by `Application`. Keep this class small and free of business logic. It is infrastructure, not another layer of abstraction for its own sake.
+Create `src/Command/JsonCommand.php` as the shared abstract base class for every custom command. This class must extend `Symfony\Component\Console\Command\Command` and must centralize the JSON envelope, output-stream selection, newline handling, and exit-code mapping. It must provide one success helper for subclasses and one failure-rendering method callable by `Application`. Keep this class small and free of business logic. It is infrastructure, not another layer of abstraction for its own sake. Keep the project on Symfony's invokable-command path: do not replace this design with explicit `execute()` implementations unless a concrete blocker appears.
 
-Create the six comparator command files under `src/Command/Comparator/`. Each file should define one `final` class, use `#[AsCommand]`, include a description and a short help string naming the wrapped method, and expose an `__invoke()` method with `#[Argument]` attributes. The methods should accept `OutputInterface $output` plus the required strings and then call the exact static `Composer\Semver\Comparator` method. Do not normalize or pre-validate the inputs.
+`JsonCommand` should also contain the stream-routing helper used by both command success paths and application-level failure handling. When the available output object implements `Symfony\Component\Console\Output\ConsoleOutputInterface`, success JSON should target the normal output stream and failure JSON should target `getErrorOutput()`. When that interface is not available, fall back to the provided output object. All JSON writes from these helpers should use `OutputInterface::OUTPUT_RAW` so formatter tags inside JSON strings are preserved literally.
 
-Create the four semver command files under `src/Command/Semver/` with the same overall style. `semver:satisfies` takes two string arguments. `semver:satisfied-by` takes a string constraint first and an array of versions second so the CLI remains ergonomic. `semver:sort` and `semver:rsort` each take a single array argument. These command classes should call the wrapped static methods directly and let exceptions bubble to the application-level JSON renderer.
+Create the six comparator command files under `src/Command/Comparator/`. Each file should define one `final` class, use `#[AsCommand]`, include a description and a short help string naming the wrapped method, and expose an `__invoke()` method with `#[Argument]` attributes. The methods should accept `SymfonyStyle $io` plus the required strings and then call the exact static `Composer\Semver\Comparator` method. Do not normalize or pre-validate the inputs.
 
-Create the three parser command files under `src/Command/Parser/` with the same overall style. `parser:parse-stability` should call the static `Composer\Semver\VersionParser::parseStability()` method and return its string result. `parser:normalize` should instantiate `Composer\Semver\VersionParser` and call `$parser->normalize($version)` because the library method is instance-based. `parser:is-valid` should also instantiate `VersionParser` and call `$parser->isValid($version)` because that API is also instance-based. Describe these two commands as wrappers around instance methods, not as wrappers around static `::` calls.
+Create the four semver command files under `src/Command/Semver/` with the same overall style. `semver:satisfies` takes two string arguments. `semver:satisfied-by` takes a string constraint first and an array of versions second so the CLI remains ergonomic. `semver:sort` and `semver:rsort` each take a single array argument. These command classes should accept `SymfonyStyle $io`, call the wrapped static methods directly, and let exceptions bubble to the application-level JSON renderer.
+
+Create the three parser command files under `src/Command/Parser/` with the same overall style. `parser:parse-stability` should accept `SymfonyStyle $io`, call the static `Composer\Semver\VersionParser::parseStability()` method, and return its string result. `parser:normalize` should accept `SymfonyStyle $io`, instantiate `Composer\Semver\VersionParser`, and call `$parser->normalize($version)` because the library method is instance-based. `parser:is-valid` should also accept `SymfonyStyle $io`, instantiate `VersionParser`, and call `$parser->isValid($version)` because that API is also instance-based. Describe these two commands as wrappers around instance methods, not as wrappers around static `::` calls.
 
 Add built-in help quality to every command through the `#[AsCommand]` attribute. Each command should include a description in plain English and at least one usage example via the `usages` attribute. The help text should mirror the reference project's style by explicitly stating which `composer/semver` method is being wrapped.
 
-Use the existing `tests/Pest.php` and `tests/TestCase.php` as the starting point instead of replacing them. Extend `tests/Pest.php` as needed so both `Feature` and any helper namespaces are covered. If Pest helpers are useful, create `tests/Support/cli.php` and have `tests/Pest.php` require it. `tests/Support/cli.php` should define one small helper function, for example `runComsem(array $input): array`, that builds the application via `Runner::buildApplication()`, disables auto-exit, runs it through `Symfony\Component\Console\Tester\ApplicationTester` with `capture_stderr_separately` enabled, and returns a structured array containing `status`, `stdout`, `stderr`, and decoded JSON when present.
+Use the existing `tests/Pest.php` and `tests/TestCase.php` as the starting point instead of replacing them. Keep CLI behavior tests under `tests/Feature`. Unit-level helpers or pure-unit coverage may live under `tests/Unit`. Only edit `tests/Pest.php` or `tests/TestCase.php` when the implementation actually needs it. If a different unit-test base class becomes necessary, add a separate unit `TestCase` and bind it explicitly instead of broadly rewriting the existing bootstrap. If Pest helpers are useful, create `tests/Support/cli.php` and have `tests/Pest.php` require it only if needed. `tests/Support/cli.php` should define one small helper function, for example `runComsem(array $input): array`, that builds the application via `Runner::buildApplication()`, disables auto-exit, runs it through `Symfony\Component\Console\Tester\ApplicationTester` with `capture_stderr_separately` enabled, and returns a structured array containing `status`, `stdout`, `stderr`, and decoded JSON when present.
 
-Replace or delete the scaffold example tests once real coverage exists. Create `tests/Feature/ComparatorCommandsTest.php` to cover all six comparator commands, including a dataset-driven happy path and at least one malformed-version case proving that comparator behavior is preserved. Create `tests/Feature/SemverCommandsTest.php` to cover all four semver commands, successful filtering and sorting, runtime failures from malformed versions or constraints, and usage failures from missing array arguments. Create `tests/Feature/ParserCommandsTest.php` to cover `parser:parse-stability`, `parser:is-valid`, and `parser:normalize`, including both success and failure behavior. Create `tests/Feature/DefaultSymfonyBehaviorTest.php` to prove that `--help`, `help comparator:greater-than`, `list`, and `--version` still behave like Symfony defaults instead of being forced into the custom JSON envelope.
+Replace or delete the scaffold example tests once real coverage exists. Create `tests/Feature/ComparatorCommandsTest.php` to cover all six comparator commands, including a dataset-driven happy path and at least one malformed-version case proving that comparator behavior is preserved. Create `tests/Feature/SemverCommandsTest.php` to cover all four semver commands, successful filtering and sorting, runtime failures from malformed versions or constraints, and usage failures from missing array arguments. Create `tests/Feature/ParserCommandsTest.php` to cover `parser:parse-stability`, `parser:is-valid`, and `parser:normalize`, including both success and failure behavior and explicitly documenting permissive parser behavior such as `parseStability('dev-main') === 'dev'` and `parseStability('not-a-version') === 'stable'`. Create `tests/Feature/DefaultSymfonyBehaviorTest.php` to prove that `--help`, `help comparator:greater-than`, `list`, and `--version` still behave like Symfony defaults instead of being forced into the custom JSON envelope.
 
 Create `phpstan.neon` in the repository root. Keep it minimal like the reference project, but include Pest's PHPStan extension files from `vendor/pestphp/pest/extension.neon` and `vendor/pestphp/pest/phpstan-pest-extension.neon`. The `paths` section must include `bin`, `src`, and `tests`.
 
@@ -304,12 +333,14 @@ Do not add `phpunit` or new PHPUnit configuration. Do not add a service containe
 5. From `/Users/work/Code/comsem`, run the parser smoke tests:
 
        php bin/comsem parser:parse-stability 1.0.0-beta2
+       php bin/comsem parser:parse-stability dev-main
+       php bin/comsem parser:parse-stability not-a-version
        php bin/comsem parser:normalize v1.2.3
        php bin/comsem parser:normalize not-a-version
        echo $?
        php bin/comsem parser:is-valid 1.0.0
 
-   Expected result: `parser:parse-stability` exits `0` and returns `beta`. `parser:normalize` exits `0` for `v1.2.3` and returns `1.2.3.0`. `parser:normalize not-a-version` prints a JSON runtime error and `echo $?` prints `1`. `parser:is-valid 1.0.0` exits `0` and returns a JSON boolean result produced by `$parser->isValid('1.0.0')`.
+   Expected result: `parser:parse-stability 1.0.0-beta2` exits `0` and returns `beta`. `parser:parse-stability dev-main` exits `0` and returns `dev`. `parser:parse-stability not-a-version` also exits `0` and returns `stable`, documenting Composer's permissive behavior. `parser:normalize` exits `0` for `v1.2.3` and returns `1.2.3.0`. `parser:normalize not-a-version` prints a JSON runtime error and `echo $?` prints `1`. `parser:is-valid 1.0.0` exits `0` and returns a JSON boolean result produced by `$parser->isValid('1.0.0')`.
 
 6. From `/Users/work/Code/comsem`, run the custom-command usage-error smoke test:
 
@@ -375,6 +406,7 @@ Acceptance is behavioral. The change is complete only when a human can observe a
 - At least one comparator malformed-input example is verified to return a successful boolean payload, proving the wrapper preserves native comparator behavior.
 - At least one semver malformed-input example is verified to return a JSON runtime failure, proving the wrapper preserves native semver exception behavior.
 - At least one parser stability example and one parser normalization example are verified against the underlying `VersionParser` behavior.
+- At least one permissive parser example is verified, proving the CLI preserves Composer behavior instead of turning `parseStability()` into a validator.
 - `parser:is-valid` is implemented as a wrapper around a `VersionParser` instance method call, not described or implemented as a static helper.
 - Default Symfony features such as `--help`, `--version`, `help`, `list`, and shell completion still work and remain outside the custom JSON contract.
 - Pest, PHPStan, Mago format checking, Mago linting, and Mago analysis all pass after the implementation is complete.
@@ -388,6 +420,10 @@ This work is safe to repeat because it is additive. The repository has no databa
 If a partial implementation leaves `bin/comsem` booting but commands missing, rerun `composer dump-autoload` and then confirm that `Runner::buildApplication()` registers all thirteen commands. A missing registration should produce `Command "..." is not defined.` from Symfony, which is a signal to fix command registration rather than to edit the bootstrap.
 
 If a custom command emits text instead of JSON, check two things first. Verify that the command extends the shared `JsonCommand` base class. Then verify that `Application::doRunCommand()` only intercepts throwables for instances of `JsonCommand`. If either link is broken, Symfony's default text rendering will leak through.
+
+If failure JSON appears on standard output instead of standard error, inspect the shared output-stream helper first. In real CLI execution and in `ApplicationTester`-based tests, error payloads should use the error stream from `ConsoleOutputInterface` when that interface is available.
+
+If JSON output loses substrings that look like Symfony formatter tags such as `<info>`, inspect the raw-output setting next. JSON payloads must be written with `OutputInterface::OUTPUT_RAW` so formatter parsing does not rewrite valid JSON string content.
 
 If `mago format --check`, `mago lint`, or `mago analyze` appear to ignore `bin/comsem` or the new tests, run `mago list-files` immediately. Do not trust passing Mago results until `mago list-files` proves the relevant files are included.
 
@@ -413,6 +449,13 @@ Representative parser success transcript after implementation:
 
     $ php bin/comsem parser:parse-stability 1.0.0-beta2
     {"ok":true,"command":"parser:parse-stability","result":"beta"}
+    $ echo $?
+    0
+
+Representative permissive parser transcript after implementation:
+
+    $ php bin/comsem parser:parse-stability not-a-version
+    {"ok":true,"command":"parser:parse-stability","result":"stable"}
     $ echo $?
     0
 
@@ -474,14 +517,20 @@ The implementation must end with these concrete interfaces and file paths.
 
     abstract class JsonCommand extends Command
     {
-        final protected function writeSuccess(OutputInterface $output, mixed $result): int;
+        final protected function writeSuccess(SymfonyStyle $io, mixed $result): int;
 
         final public function renderFailure(Throwable $throwable, OutputInterface $output): int;
 
         final protected static function isUsageThrowable(Throwable $throwable): bool;
+
+        final protected function resolveOutput(SymfonyStyle $io): OutputInterface;
+
+        final protected function resolveErrorOutput(OutputInterface $output): OutputInterface;
+
+        final protected function writeJson(OutputInterface $output, array $payload): void;
     }
 
-The thirteen command files under `src/Command/Comparator/`, `src/Command/Semver/`, and `src/Command/Parser/` must each define one `final` class that extends `JsonCommand`, uses `#[AsCommand]`, and implements command logic through an `__invoke()` method with `#[Argument]` attributes. No command in this initial implementation needs custom options, so `#[Option]` is not required.
+The thirteen command files under `src/Command/Comparator/`, `src/Command/Semver/`, and `src/Command/Parser/` must each define one `final` class that extends `JsonCommand`, uses `#[AsCommand]`, and implements command logic through an `__invoke()` method with `#[Argument]` attributes and a `SymfonyStyle $io` parameter. No command in this initial implementation needs custom options, so `#[Option]` is not required.
 
 `tests/Support/cli.php`, if added, must define one helper function that builds the application, disables auto-exit, runs it through `ApplicationTester`, and returns captured `status`, `stdout`, and `stderr` so tests can assert both streams independently. It must integrate with the already existing `tests/Pest.php` bootstrap instead of replacing it.
 
@@ -507,3 +556,5 @@ The only external runtime libraries that should be used directly by the implemen
 2026-05-01 / OpenCode: Initial ExecPlan created after inspecting the current repository, the reference project, the `composer/semver` README and source behavior, Symfony Console's exception and default-command flow, Pest availability, PHPStan Pest integration files, and the existing Mago configuration. The purpose of this revision was to turn an empty implementation space into a complete, self-contained execution plan without starting implementation.
 
 2026-05-01 / OpenCode: Revised the ExecPlan after the repository gained a working Pest scaffold and the requested scope expanded to three `VersionParser` commands. This revision also updates the wording so `parseStability()` is described as a static helper while `normalize()` and `isValid()` are described as instance-method wrappers using a constructed `VersionParser` object.
+
+2026-05-01 / OpenCode: Final pre-implementation revision after the dependency was updated and the latest design constraints were clarified. This revision records the current `VersionParser` static-versus-instance method split from the installed dependency, switches command signatures toward `SymfonyStyle` in line with project convention, adds explicit stderr-routing guidance through `ConsoleOutputInterface`, requires raw output mode for JSON writes so Symfony formatter tags cannot corrupt payloads, documents Composer's permissive parser behaviors as required acceptance criteria, and tightens the Pest testing guidance to keep CLI tests under `tests/Feature` while leaving the existing bootstrap mostly untouched.
