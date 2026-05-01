@@ -30,10 +30,10 @@
   },
   "require": {
     "php": "^8.5",
+    "ext-iconv": "*",
     "composer-runtime-api": "^2.2",
     "composer/semver": "dev-main",
-    "symfony/console": "^8.0",
-    "symfony/polyfill-iconv": "^1.33"
+    "symfony/console": "^8.0"
   },
   "require-dev": {
     "laravel/pao": "^1.0",
