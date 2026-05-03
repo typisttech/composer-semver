@@ -23,10 +23,10 @@ integrations = ["symfony", "pest"]
 [linter.rules]
 literal-named-argument = { enabled = false }
 tagged-todo = { enabled = false }
+#class-must-be-final = { enabled = false }
 
 # https://mago.carthage.software/tools/analyzer/configuration-reference#strict-mode
 [analyzer]
-# Enable all checks
 find-unused-expressions = true
 find-unused-definitions = true
 find-overly-wide-return-types = true
@@ -37,14 +37,12 @@ find-unused-parameters = true
 check-missing-type-hints = true
 check-closure-missing-type-hints = true
 check-arrow-function-missing-type-hints = false # Do not require type hints for arrow functions.
-enforce-class-finality = true
+enforce-class-finality = false # Do not require classes to be final.
 require-api-or-internal = false # Do not require @api nor or @internal annotations.
 check-experimental = true
 
-# Enable strict checks
 strict-list-index-checks = true
 no-boolean-literal-comparison = true
 
-# Disable lenient behaviors
 allow-possibly-undefined-array-keys = false
 trust-existence-checks = false

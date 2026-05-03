@@ -8,7 +8,7 @@ use Composer\Semver\Semver;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
-use TypistTech\ComSem\Command\JsonCommand;
+use TypistTech\ComSem\Command\ExecToJson;
 
 #[AsCommand(
     name: 'semver:satisfies',
@@ -20,8 +20,10 @@ use TypistTech\ComSem\Command\JsonCommand;
         HELP,
     usages: ["1.2.3 '^1.0'"],
 )]
-final class SatisfiesCommand extends JsonCommand
+class SatisfiesCommand
 {
+    use ExecToJson;
+
     public function __invoke(
         OutputInterface $output,
         #[Argument('The version to test.')]

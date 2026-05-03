@@ -8,7 +8,7 @@ use Composer\Semver\VersionParser;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
-use TypistTech\ComSem\Command\JsonCommand;
+use TypistTech\ComSem\Command\ExecToJson;
 
 #[AsCommand(
     name: 'parser:is-valid',
@@ -20,8 +20,10 @@ use TypistTech\ComSem\Command\JsonCommand;
         HELP,
     usages: ['1.0.0'],
 )]
-final class IsValidCommand extends JsonCommand
+class IsValidCommand
 {
+    use ExecToJson;
+
     public function __invoke(
         OutputInterface $output,
         #[Argument('The version string to validate.')]

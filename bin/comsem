@@ -18,4 +18,5 @@ if (!in_array(PHP_SAPI, ['micro', 'cli', 'phpdbg', 'embed'], true)) {
 
 include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
-Runner::run();
+$application = new Application();
+$application->run();

@@ -8,7 +8,8 @@ use Composer\Semver\VersionParser;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
-use TypistTech\ComSem\Command\JsonCommand;
+use TypistTech\ComSem\Command\ExecToJson;
+use UnexpectedValueException;
 
 #[AsCommand(
     name: 'parser:normalize',
@@ -20,10 +21,12 @@ use TypistTech\ComSem\Command\JsonCommand;
         HELP,
     usages: ['v1.2.3'],
 )]
-final class NormalizeCommand extends JsonCommand
+class NormalizeCommand
 {
+    use ExecToJson;
+
     /**
-     * @throws \UnexpectedValueException
+     * @throws UnexpectedValueException
      */
     public function __invoke(
         OutputInterface $output,

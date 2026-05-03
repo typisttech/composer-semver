@@ -8,7 +8,7 @@ use Composer\Semver\Comparator;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
-use TypistTech\ComSem\Command\JsonCommand;
+use TypistTech\ComSem\Command\ExecToJson;
 
 #[AsCommand(
     name: 'comparator:not-equal-to',
@@ -20,8 +20,10 @@ use TypistTech\ComSem\Command\JsonCommand;
         HELP,
     usages: ['1.24.0 1.25.0'],
 )]
-final class NotEqualToCommand extends JsonCommand
+class NotEqualToCommand
 {
+    use ExecToJson;
+
     public function __invoke(
         OutputInterface $output,
         #[Argument('The first version string.')]

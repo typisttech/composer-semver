@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Symfony\Component\Console\Tester\ApplicationTester;
-use TypistTech\ComSem\Runner;
+use TypistTech\ComSem\Application;
 
 if (!function_exists('run_comsem')) {
     /**
@@ -13,7 +13,7 @@ if (!function_exists('run_comsem')) {
      */
     function run_comsem(array $input): array
     {
-        $application = Runner::buildApplication();
+        $application = new Application();
         $application->setAutoExit(false);
 
         $tester = new ApplicationTester($application);
