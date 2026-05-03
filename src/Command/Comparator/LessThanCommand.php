@@ -13,7 +13,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 #[AsCommand(
     name: 'comparator:less-than',
     description: 'Compare whether the first version is less than the second.',
-    help: '{github:composer/semver|src/Comparator.php|lessThan|static|Composer\\\\Semver\\\\Comparator::lessThan()|and returns its boolean result as JSON.}',
+    help: 'Wraps <href=https://github.com/composer/semver/blob/%semver.reference%/src/Comparator.php#:~:text=public%20static%20function%20lessThan>Composer\\\\Semver\\\\Comparator::lessThan()</> and returns its boolean result as JSON.\n\nSee <href=https://github.com/composer/semver/blob/%semver.reference%/src/Comparator.php#:~:text=public%20static%20function%20lessThan>https://github.com/composer/semver/blob/%semver.reference%/src/Comparator.php#:~:text=public%20static%20function%20lessThan</>',
     usages: ['1.24.0 1.25.0']
 )]
 final class LessThanCommand extends JsonCommand

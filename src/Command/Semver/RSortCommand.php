@@ -13,7 +13,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 #[AsCommand(
     name: 'semver:rsort',
     description: 'Sort versions in descending Composer order.',
-    help: '{github:composer/semver|src/Semver.php|rsort|static|Composer\\\\Semver\\\\Semver::rsort()|and returns the reverse-sorted version list as JSON.}',
+    help: 'Wraps <href=https://github.com/composer/semver/blob/%semver.reference%/src/Semver.php#:~:text=public%20static%20function%20rsort>Composer\\\\Semver\\\\Semver::rsort()</> and returns the reverse-sorted version list as JSON.\n\nSee <href=https://github.com/composer/semver/blob/%semver.reference%/src/Semver.php#:~:text=public%20static%20function%20rsort>https://github.com/composer/semver/blob/%semver.reference%/src/Semver.php#:~:text=public%20static%20function%20rsort</>',
     usages: ['1.0.0-beta 1.0.0 2.0.0']
 )]
 final class RSortCommand extends JsonCommand

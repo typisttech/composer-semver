@@ -13,7 +13,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 #[AsCommand(
     name: 'comparator:not-equal-to',
     description: 'Compare whether the two versions are different.',
-    help: '{github:composer/semver|src/Comparator.php|notEqualTo|static|Composer\\\\Semver\\\\Comparator::notEqualTo()|and returns its boolean result as JSON.}',
+    help: 'Wraps <href=https://github.com/composer/semver/blob/%semver.reference%/src/Comparator.php#:~:text=public%20static%20function%20notEqualTo>Composer\\\\Semver\\\\Comparator::notEqualTo()</> and returns its boolean result as JSON.\n\nSee <href=https://github.com/composer/semver/blob/%semver.reference%/src/Comparator.php#:~:text=public%20static%20function%20notEqualTo>https://github.com/composer/semver/blob/%semver.reference%/src/Comparator.php#:~:text=public%20static%20function%20notEqualTo</>',
     usages: ['1.24.0 1.25.0']
 )]
 final class NotEqualToCommand extends JsonCommand

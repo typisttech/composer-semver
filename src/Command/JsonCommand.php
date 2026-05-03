@@ -84,6 +84,9 @@ abstract class JsonCommand extends Command
     {
         // let the parent do its processing first (percent placeholders etc.)
         $help = parent::getProcessedHelp();
+        // replace the semver package reference placeholder with the installed reference
+        $ref = InstalledVersions::getReference('composer/semver') ?: 'HEAD';
+        $help = str_replace('%semver.reference%', $ref, $help);
 
         // Replace our github placeholders of the form:
         // {github:package|filePath|methodName|static|display|suffix}

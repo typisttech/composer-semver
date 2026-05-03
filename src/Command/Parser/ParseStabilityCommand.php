@@ -13,7 +13,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 #[AsCommand(
     name: 'parser:parse-stability',
     description: 'Parse the stability string for a version.',
-    help: '{github:composer/semver|src/VersionParser.php|parseStability|static|Composer\\\\Semver\\\\VersionParser::parseStability()|and returns the stability string as JSON.}',
+    help: 'Wraps <href=https://github.com/composer/semver/blob/%semver.reference%/src/VersionParser.php#:~:text=public%20static%20function%20parseStability>Composer\\\\Semver\\\\VersionParser::parseStability()</> and returns the stability string as JSON.\n\nSee <href=https://github.com/composer/semver/blob/%semver.reference%/src/VersionParser.php#:~:text=public%20static%20function%20parseStability>https://github.com/composer/semver/blob/%semver.reference%/src/VersionParser.php#:~:text=public%20static%20function%20parseStability</>',
     usages: ['1.0.0-beta2']
 )]
 final class ParseStabilityCommand extends JsonCommand
