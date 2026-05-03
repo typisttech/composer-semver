@@ -13,7 +13,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 #[AsCommand(
     name: 'parser:normalize',
     description: 'Normalize a version string using Composer rules.',
-    help: 'Wraps the Composer\\\\Semver\\\\VersionParser instance method normalize() and returns the normalized version string as JSON.\n\nSee <href=https://github.com/composer/semver/blob/%semver.reference%/src/VersionParser.php#:~:text=public%20function%20normalize>https://github.com/composer/semver/blob/%semver.reference%/src/VersionParser.php#:~:text=public%20function%20normalize</>',
+    help: 'Wraps <href=https://github.com/composer/semver/blob/%semver.reference%/src/VersionParser.php#:~:text=public%20function%20normalize>Composer\\\\Semver\\\\VersionParser::normalize()</> and returns the normalized version string as JSON.\n\nSee <href=https://github.com/composer/semver/blob/%semver.reference%/src/VersionParser.php#:~:text=public%20function%20normalize>https://github.com/composer/semver/blob/%semver.reference%/src/VersionParser.php#:~:text=public%20function%20normalize</>',
     usages: ['v1.2.3']
 )]
 final class NormalizeCommand extends JsonCommand

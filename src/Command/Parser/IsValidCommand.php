@@ -13,7 +13,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 #[AsCommand(
     name: 'parser:is-valid',
     description: 'Check whether a version is valid for Composer parsing.',
-    help: 'Wraps <href=https://github.com/composer/semver/blob/%semver.reference%/src/VersionParser.php#:~:text=public%20function%20isValid>the Composer\\\\Semver\\\\VersionParser instance method isValid()</> and returns its boolean result as JSON.\n\nSee <href=https://github.com/composer/semver/blob/%semver.reference%/src/VersionParser.php#:~:text=public%20function%20isValid>https://github.com/composer/semver/blob/%semver.reference%/src/VersionParser.php#:~:text=public%20function%20isValid</>',
+    help: 'Wraps <href=https://github.com/composer/semver/blob/%semver.reference%/src/VersionParser.php#:~:text=public%20function%20isValid>Composer\\\\Semver\\\\VersionParser::isValid()</> and returns its boolean result as JSON.\\n\\nSee <href=https://github.com/composer/semver/blob/%semver.reference%/src/VersionParser.php#:~:text=public%20function%20isValid>https://github.com/composer/semver/blob/%semver.reference%/src/VersionParser.php#:~:text=public%20function%20isValid</>',
     usages: ['1.0.0']
 )]
 final class IsValidCommand extends JsonCommand
