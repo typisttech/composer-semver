@@ -13,11 +13,17 @@ use TypistTech\ComSem\Command\JsonCommand;
 #[AsCommand(
     name: 'semver:sort',
     description: 'Sort versions in ascending Composer order.',
-    help: 'Wraps <href=https://github.com/composer/semver/blob/%semver.reference%/src/Semver.php#:~:text=public%20static%20function%20sort>Composer\\\\Semver\\\\Semver::sort()</> and returns the sorted version list as JSON.\n\nSee <href=https://github.com/composer/semver/blob/%semver.reference%/src/Semver.php#:~:text=public%20static%20function%20sort>https://github.com/composer/semver/blob/%semver.reference%/src/Semver.php#:~:text=public%20static%20function%20sort</>',
+    help: SortCommand::HELP,
     usages: ['1.0.0-beta 1.0.0 2.0.0']
 )]
 final class SortCommand extends JsonCommand
 {
+    public const HELP = <<<HELP
+        Wraps <href=%semver.url%/src/Semver.php>Composer\Semver\Semver::sort()</> and returns the sorted version list as JSON.
+
+        See <href=%semver.url%/src/Semver.php>%semver.url%/src/Semver.php</>
+        HELP;
+
     /**
      * @param list<string> $versions
      * @throws \UnexpectedValueException

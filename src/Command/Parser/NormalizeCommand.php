@@ -13,11 +13,17 @@ use TypistTech\ComSem\Command\JsonCommand;
 #[AsCommand(
     name: 'parser:normalize',
     description: 'Normalize a version string using Composer rules.',
-    help: 'Wraps <href=https://github.com/composer/semver/blob/%semver.reference%/src/VersionParser.php#:~:text=public%20function%20normalize>Composer\\\\Semver\\\\VersionParser::normalize()</> and returns the normalized version string as JSON.\n\nSee <href=https://github.com/composer/semver/blob/%semver.reference%/src/VersionParser.php#:~:text=public%20function%20normalize>https://github.com/composer/semver/blob/%semver.reference%/src/VersionParser.php#:~:text=public%20function%20normalize</>',
+    help: NormalizeCommand::HELP,
     usages: ['v1.2.3']
 )]
 final class NormalizeCommand extends JsonCommand
 {
+    public const HELP = <<<HELP
+        Wraps <href=%semver.url%/src/VersionParser.php>Composer\Semver\VersionParser::normalize()</> and returns the normalized version string as JSON.
+
+        See <href=%semver.url%/src/VersionParser.php>%semver.url%/src/VersionParser.php</>
+        HELP;
+
     /**
      * @throws \UnexpectedValueException
      */
