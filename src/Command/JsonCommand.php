@@ -74,4 +74,33 @@ abstract class JsonCommand extends Command
 
         return $help;
     }
+
+    /**
+     * Process help text, replacing any {github:...} placeholders with generated links.
+     * Mirrors Symfony\Component\Console\Command\Command::getProcessedHelp() behaviour but
+     * adds replacement for our {github:package|file|method|static|display|suffix} tokens.
+     */
+    public function getProcessedHelp(): string
+    {
+        // let the parent do its processing first (percent placeholders etc.)
+        $help = parent::getProcessedHelp();
+
+        // Replace our github placeholders of the form:
+        // {github:package|filePath|methodName|static|display|suffix}
+        $help = preg_replace_callback('/\{github:([^}]+)\}/', static function ($matches) {
+            $parts = explode('|', $matches[1]);
+
+            // Expect at least 6 parts; pad missing parts with empty strings
+            $parts = array_pad($parts, 6, '');
+
+            [$package, $filePath, $methodName, $staticToken, $display, $suffix] = $parts;
+
+            $isStatic = ($staticToken === 'static');
+
+            // Use the helper to build the final help fragment
+            return self::githubMethodHelp($package, $filePath, $methodName, $isStatic, $display, $suffix);
+        }, $help) ?: $help;
+
+        return $help;
+    }
 }

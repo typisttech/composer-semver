@@ -13,24 +13,11 @@ use TypistTech\ComSem\Command\JsonCommand;
 #[AsCommand(
     name: 'parser:is-valid',
     description: 'Check whether a version is valid for Composer parsing.',
-    help: '',
+    help: '{github:composer/semver|src/VersionParser.php|isValid|instance|Composer\\\\Semver\\\\VersionParser::isValid()|and returns its boolean result as JSON.}',
     usages: ['1.0.0']
 )]
 final class IsValidCommand extends JsonCommand
 {
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->setHelp(self::githubMethodHelp(
-            'composer/semver',
-            'src/VersionParser.php',
-            'isValid',
-            false,
-            'Composer\\\\Semver\\\\VersionParser::isValid()',
-            'and returns its boolean result as JSON.'
-        ));
-    }
     public function __invoke(
         OutputInterface $output,
         #[Argument('The version string to validate.')]

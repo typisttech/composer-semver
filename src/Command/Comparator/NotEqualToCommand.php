@@ -13,24 +13,11 @@ use TypistTech\ComSem\Command\JsonCommand;
 #[AsCommand(
     name: 'comparator:not-equal-to',
     description: 'Compare whether the two versions are different.',
-    help: '',
+    help: '{github:composer/semver|src/Comparator.php|notEqualTo|static|Composer\\\\Semver\\\\Comparator::notEqualTo()|and returns its boolean result as JSON.}',
     usages: ['1.24.0 1.25.0']
 )]
 final class NotEqualToCommand extends JsonCommand
 {
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->setHelp(self::githubMethodHelp(
-            'composer/semver',
-            'src/Comparator.php',
-            'notEqualTo',
-            true,
-            'Composer\\\\Semver\\\\Comparator::notEqualTo()',
-            'and returns its boolean result as JSON.'
-        ));
-    }
     public function __invoke(
         OutputInterface $output,
         #[Argument('The first version string.')]

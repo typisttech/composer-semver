@@ -13,24 +13,11 @@ use TypistTech\ComSem\Command\JsonCommand;
 #[AsCommand(
     name: 'comparator:less-than-or-equal-to',
     description: 'Compare whether the first version is less than or equal to the second.',
-    help: '',
+    help: '{github:composer/semver|src/Comparator.php|lessThanOrEqualTo|static|Composer\\\\Semver\\\\Comparator::lessThanOrEqualTo()|and returns its boolean result as JSON.}',
     usages: ['1.24.0 1.24.0']
 )]
 final class LessThanOrEqualToCommand extends JsonCommand
 {
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->setHelp(self::githubMethodHelp(
-            'composer/semver',
-            'src/Comparator.php',
-            'lessThanOrEqualTo',
-            true,
-            'Composer\\\\Semver\\\\Comparator::lessThanOrEqualTo()',
-            'and returns its boolean result as JSON.'
-        ));
-    }
     public function __invoke(
         OutputInterface $output,
         #[Argument('The first version string.')]

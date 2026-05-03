@@ -13,24 +13,11 @@ use TypistTech\ComSem\Command\JsonCommand;
 #[AsCommand(
     name: 'comparator:equal-to',
     description: 'Compare whether the two versions are equal.',
-    help: '',
+    help: '{github:composer/semver|src/Comparator.php|equalTo|static|Composer\\\\Semver\\\\Comparator::equalTo()|and returns its boolean result as JSON.}',
     usages: ['1.24.0 1.24.0']
 )]
 final class EqualToCommand extends JsonCommand
 {
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->setHelp(self::githubMethodHelp(
-            'composer/semver',
-            'src/Comparator.php',
-            'equalTo',
-            true,
-            'Composer\\\\Semver\\\\Comparator::equalTo()',
-            'and returns its boolean result as JSON.'
-        ));
-    }
     public function __invoke(
         OutputInterface $output,
         #[Argument('The first version string.')]
