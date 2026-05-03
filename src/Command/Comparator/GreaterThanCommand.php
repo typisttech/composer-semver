@@ -12,18 +12,16 @@ use TypistTech\ComSem\Command\JsonCommand;
 
 #[AsCommand(
     name: 'comparator:greater-than',
-    description: 'Compare whether the first version is greater than the second.',
-    help: GreaterThanCommand::HELP,
+    description: 'Compare whether the first version is greater than the second',
+    help: <<<HELP
+        Wraps <href=%semver.url%/src/Comparator.php>Composer\Semver\Comparator::greaterThan()</> and returns its boolean result as JSON.
+
+        See <href=%semver.url%/src/Comparator.php>%semver.url%/src/Comparator.php</>
+        HELP,
     usages: ['1.25.0 1.24.0']
 )]
 final class GreaterThanCommand extends JsonCommand
 {
-    public const string HELP = <<<HELP
-        Wraps <href=%semver.url%/src/Comparator.php>Composer\Semver\Comparator::greaterThan()</> and returns its boolean result as JSON.
-
-        See <href=%semver.url%/src/Comparator.php>%semver.url%/src/Comparator.php</>
-        HELP;
-
     public function __invoke(
         OutputInterface $output,
         #[Argument('The first version string.')]

@@ -12,7 +12,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 
 #[AsCommand(
     name: 'semver:sort',
-    description: 'Sort versions in ascending Composer order.',
+    description: 'Sort versions in ascending Composer order',
     help: SortCommand::HELP,
     usages: ['1.0.0-beta 1.0.0 2.0.0']
 )]

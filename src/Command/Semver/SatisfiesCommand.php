@@ -12,18 +12,16 @@ use TypistTech\ComSem\Command\JsonCommand;
 
 #[AsCommand(
     name: 'semver:satisfies',
-    description: 'Check whether a version satisfies the given constraints.',
-    help: SatisfiesCommand::HELP,
+    description: 'Check whether a version satisfies the given constraints',
+    help: <<<HELP
+        Wraps <href=%semver.url%/src/Semver.php>Composer\Semver\Semver::satisfies()</> and returns its boolean result as JSON.
+
+        See <href=%semver.url%/src/Semver.php>%semver.url%/src/Semver.php</>
+        HELP,
     usages: ["1.2.3 '^1.0'"]
 )]
 final class SatisfiesCommand extends JsonCommand
 {
-    public const string HELP = <<<HELP
-        Wraps <href=%semver.url%/src/Semver.php>Composer\Semver\Semver::satisfies()</> and returns its boolean result as JSON.
-
-        See <href=%semver.url%/src/Semver.php>%semver.url%/src/Semver.php</>
-        HELP;
-
     public function __invoke(
         OutputInterface $output,
         #[Argument('The version to test.')]

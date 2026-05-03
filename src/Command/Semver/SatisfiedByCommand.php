@@ -12,18 +12,16 @@ use TypistTech\ComSem\Command\JsonCommand;
 
 #[AsCommand(
     name: 'semver:satisfied-by',
-    description: 'Filter versions by the given constraints.',
-    help: SatisfiedByCommand::HELP,
+    description: 'Filter versions by the given constraints',
+    help: <<<HELP
+        Wraps <href=%semver.url%/src/Semver.php>Composer\Semver\Semver::satisfiedBy()</>. The CLI uses <constraints> <versions>... because Symfony requires array arguments to come last.
+
+        See <href=%semver.url%/src/Semver.php>%semver.url%/src/Semver.php</>
+        HELP,
     usages: ["'^1.0' 1.0.0 1.2.0 2.0.0"]
 )]
 final class SatisfiedByCommand extends JsonCommand
 {
-    public const string HELP = <<<HELP
-        Wraps <href=%semver.url%/src/Semver.php>Composer\Semver\Semver::satisfiedBy()</>. The CLI uses <constraints> <versions>... because Symfony requires array arguments to come last.
-
-        See <href=%semver.url%/src/Semver.php>%semver.url%/src/Semver.php</>
-        HELP;
-
     /**
      * @param list<string> $versions
      * @throws \UnexpectedValueException

@@ -12,18 +12,16 @@ use TypistTech\ComSem\Command\JsonCommand;
 
 #[AsCommand(
     name: 'comparator:equal-to',
-    description: 'Compare whether the two versions are equal.',
-    help: EqualToCommand::HELP,
+    description: 'Compare whether the two versions are equal',
+    help: <<<HELP
+        Wraps <href=%semver.url%/src/Comparator.php>Composer\Semver\Comparator::equalTo()</> and returns its boolean result as JSON.
+
+        See <href=%semver.url%/src/Comparator.php>%semver.url%/src/Comparator.php</>
+        HELP,
     usages: ['1.24.0 1.24.0']
 )]
 final class EqualToCommand extends JsonCommand
 {
-    public const string HELP = <<<HELP
-        Wraps <href=%semver.url%/src/Comparator.php>Composer\Semver\Comparator::equalTo()</> and returns its boolean result as JSON.
-
-        See <href=%semver.url%/src/Comparator.php>%semver.url%/src/Comparator.php</>
-        HELP;
-
     public function __invoke(
         OutputInterface $output,
         #[Argument('The first version string.')]

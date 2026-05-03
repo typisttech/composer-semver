@@ -12,18 +12,16 @@ use TypistTech\ComSem\Command\JsonCommand;
 
 #[AsCommand(
     name: 'semver:rsort',
-    description: 'Sort versions in descending Composer order.',
-    help: RSortCommand::HELP,
+    description: 'Sort versions in descending Composer order',
+    help: <<<HELP
+        Wraps <href=%semver.url%/src/Semver.php>Composer\Semver\Semver::rsort()</> and returns the reverse-sorted version list as JSON.
+
+        See <href=%semver.url%/src/Semver.php>%semver.url%/src/Semver.php</>
+        HELP,
     usages: ['1.0.0-beta 1.0.0 2.0.0']
 )]
 final class RSortCommand extends JsonCommand
 {
-    public const string HELP = <<<HELP
-        Wraps <href=%semver.url%/src/Semver.php>Composer\Semver\Semver::rsort()</> and returns the reverse-sorted version list as JSON.
-
-        See <href=%semver.url%/src/Semver.php>%semver.url%/src/Semver.php</>
-        HELP;
-
     /**
      * @param list<string> $versions
      * @throws \UnexpectedValueException

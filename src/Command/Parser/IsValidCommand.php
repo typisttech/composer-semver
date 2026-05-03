@@ -12,18 +12,16 @@ use TypistTech\ComSem\Command\JsonCommand;
 
 #[AsCommand(
     name: 'parser:is-valid',
-    description: 'Check whether a version is valid for Composer parsing.',
-    help: IsValidCommand::HELP,
+    description: 'Check whether a version is valid for Composer parsing',
+    help: <<<HELP
+        Wraps <href=%semver.url%/src/VersionParser.php>Composer\Semver\VersionParser::isValid()</> and returns its boolean result as JSON.
+
+        See <href=%semver.url%/src/VersionParser.php>%semver.url%/src/VersionParser.php</>
+        HELP,
     usages: ['1.0.0']
 )]
 final class IsValidCommand extends JsonCommand
 {
-    public const string HELP = <<<HELP
-        Wraps <href=%semver.url%/src/VersionParser.php>Composer\Semver\VersionParser::isValid()</> and returns its boolean result as JSON.
-
-        See <href=%semver.url%/src/VersionParser.php>%semver.url%/src/VersionParser.php</>
-        HELP;
-
     public function __invoke(
         OutputInterface $output,
         #[Argument('The version string to validate.')]
