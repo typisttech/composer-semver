@@ -13,7 +13,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 #[AsCommand(
     name: 'semver:satisfied-by',
     description: 'Filter versions by the given constraints.',
-    help: 'Wraps Composer\\Semver\\Semver::satisfiedBy(). The CLI uses <constraints> <versions>... because Symfony requires array arguments to come last.',
+    help: 'Wraps <href=https://github.com/composer/semver/blob/09af5e85b5f1380e4e098dde28950e2549cba4ed/src/Semver.php>Composer\\\\Semver\\\\Semver::satisfiedBy()</>. The CLI uses <constraints> <versions>... because Symfony requires array arguments to come last.\n\nSee <href=https://github.com/composer/semver/blob/09af5e85b5f1380e4e098dde28950e2549cba4ed/src/Semver.php#:~:text=public%20static%20function%20satisfiedBy>Composer\\\\Semver\\\\Semver::satisfiedBy()</>',
     usages: ["'^1.0' 1.0.0 1.2.0 2.0.0"]
 )]
 final class SatisfiedByCommand extends JsonCommand

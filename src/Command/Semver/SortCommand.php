@@ -13,7 +13,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 #[AsCommand(
     name: 'semver:sort',
     description: 'Sort versions in ascending Composer order.',
-    help: 'Wraps Composer\\Semver\\Semver::sort() and returns the sorted version list as JSON.',
+    help: 'Wraps <href=https://github.com/composer/semver/blob/09af5e85b5f1380e4e098dde28950e2549cba4ed/src/Semver.php>Composer\\\\Semver\\\\Semver::sort()</> and returns the sorted version list as JSON.\n\nSee <href=https://github.com/composer/semver/blob/09af5e85b5f1380e4e098dde28950e2549cba4ed/src/Semver.php#:~:text=public%20static%20function%20sort>Composer\\\\Semver\\\\Semver::sort()</>',
     usages: ['1.0.0-beta 1.0.0 2.0.0']
 )]
 final class SortCommand extends JsonCommand
