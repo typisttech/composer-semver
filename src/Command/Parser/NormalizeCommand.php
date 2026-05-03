@@ -13,11 +13,24 @@ use TypistTech\ComSem\Command\JsonCommand;
 #[AsCommand(
     name: 'parser:normalize',
     description: 'Normalize a version string using Composer rules.',
-    help: 'Wraps <href=https://github.com/composer/semver/blob/09af5e85b5f1380e4e098dde28950e2549cba4ed/src/VersionParser.php>the Composer\\\\Semver\\\\VersionParser instance method normalize()</> and returns the normalized version string as JSON.\n\nSee <href=https://github.com/composer/semver/blob/09af5e85b5f1380e4e098dde28950e2549cba4ed/src/VersionParser.php#:~:text=public%20function%20normalize>Composer\\\\Semver\\\\VersionParser::normalize()</>',
+    help: '',
     usages: ['v1.2.3']
 )]
 final class NormalizeCommand extends JsonCommand
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setHelp(self::githubMethodHelp(
+            'composer/semver',
+            'src/VersionParser.php',
+            'normalize',
+            false,
+            'Composer\\\\Semver\\\\VersionParser::normalize()',
+            'and returns the normalized version string as JSON.'
+        ));
+    }
     /**
      * @throws \UnexpectedValueException
      */

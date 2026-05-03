@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace TypistTech\ComSem\Command;
 
+use Composer\InstalledVersions;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -55,5 +56,22 @@ abstract class JsonCommand extends Command
     private function commandName(): string
     {
         return $this->getName() ?? throw new \LogicException('Command name is not available.');
+    }
+
+    /**
+     * Build a help string that links to the upstream GitHub source for a method.
+     * Uses InstalledVersions::getReference() at runtime so links track the installed
+     * package reference.
+     */
+    protected static function githubMethodHelp(string $package, string $filePath, string $methodName, bool $isStatic, string $display, string $suffix = ''): string
+    {
+        $ref = InstalledVersions::getReference($package) ?: 'HEAD';
+
+        $base = sprintf('https://github.com/%s/blob/%s/%s', $package, $ref, $filePath);
+        $fragment = ($isStatic ? 'public%20static%20function%20' : 'public%20function%20') . $methodName;
+
+        $help = sprintf("Wraps <href=%s>%s</> %s\n\nSee <href=%s#:~:text=%s>%s", $base, $display, $suffix, $base, $fragment, $display);
+
+        return $help;
     }
 }

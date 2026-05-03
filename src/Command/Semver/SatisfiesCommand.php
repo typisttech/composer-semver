@@ -13,11 +13,24 @@ use TypistTech\ComSem\Command\JsonCommand;
 #[AsCommand(
     name: 'semver:satisfies',
     description: 'Check whether a version satisfies the given constraints.',
-    help: 'Wraps <href=https://github.com/composer/semver/blob/09af5e85b5f1380e4e098dde28950e2549cba4ed/src/Semver.php>Composer\\\\Semver\\\\Semver::satisfies()</> and returns its boolean result as JSON.\n\nSee <href=https://github.com/composer/semver/blob/09af5e85b5f1380e4e098dde28950e2549cba4ed/src/Semver.php#:~:text=public%20static%20function%20satisfies>Composer\\\\Semver\\\\Semver::satisfies()</>',
+    help: '',
     usages: ["1.2.3 '^1.0'"]
 )]
 final class SatisfiesCommand extends JsonCommand
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setHelp(self::githubMethodHelp(
+            'composer/semver',
+            'src/Semver.php',
+            'satisfies',
+            true,
+            'Composer\\\\Semver\\\\Semver::satisfies()',
+            'and returns its boolean result as JSON.'
+        ));
+    }
     /**
      * @throws \UnexpectedValueException
      */
