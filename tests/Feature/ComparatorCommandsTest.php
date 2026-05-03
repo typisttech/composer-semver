@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Symfony\Component\Console\Command\Command;
 
@@ -10,24 +10,24 @@ dataset('successful comparator commands', [
     ['comparator:less-than',                '1.24.0', '1.25.0'],
     ['comparator:less-than-or-equal-to',    '1.24.0', '1.24.0'],
     ['comparator:equal-to',                 '1.24.0', '1.24.0'],
-    ['comparator:not-equal-to',             '1.24.0', '1.25.0']
+    ['comparator:not-equal-to',             '1.24.0', '1.25.0'],
 ]);
 
 it('returns success json for comparator commands', function (
     string $commandName,
     string $version1,
-    string $version2
+    string $version2,
 ): void {
     $result = run_comsem([
         'command' => $commandName,
         'version1' => $version1,
-        'version2' => $version2
+        'version2' => $version2,
     ]);
     $json = require_json_object($result);
 
     $expected = [
         'command' => $commandName,
-        'result' => true
+        'result' => true,
     ];
 
     expect($result['status'])
@@ -44,13 +44,13 @@ it('preserves comparator false results as successful command execution', functio
     $result = run_comsem([
         'command' => 'comparator:greater-than',
         'version1' => 'not-a-version',
-        'version2' => '1.0.0'
+        'version2' => '1.0.0',
     ]);
     $json = require_json_object($result);
 
     $expected = [
         'command' => 'comparator:greater-than',
-        'result' => false
+        'result' => false,
     ];
 
     expect($result['status'])

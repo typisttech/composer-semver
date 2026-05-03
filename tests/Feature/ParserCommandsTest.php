@@ -1,19 +1,19 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Symfony\Component\Console\Command\Command;
 
 it('returns parsed stability for beta versions', function (): void {
     $result = run_comsem([
         'command' => 'parser:parse-stability',
-        'version' => '1.0.0-beta2'
+        'version' => '1.0.0-beta2',
     ]);
     $json = require_json_object($result);
 
     $expected = [
         'command' => 'parser:parse-stability',
-        'result' => 'beta'
+        'result' => 'beta',
     ];
 
     expect($result['status'])
@@ -29,13 +29,13 @@ it('returns parsed stability for beta versions', function (): void {
 it('preserves permissive parse stability behavior for dev branches', function (): void {
     $result = run_comsem([
         'command' => 'parser:parse-stability',
-        'version' => 'dev-main'
+        'version' => 'dev-main',
     ]);
     $json = require_json_object($result);
 
     $expected = [
         'command' => 'parser:parse-stability',
-        'result' => 'dev'
+        'result' => 'dev',
     ];
 
     expect($result['status'])
@@ -51,13 +51,13 @@ it('preserves permissive parse stability behavior for dev branches', function ()
 it('preserves permissive parse stability behavior for malformed versions', function (): void {
     $result = run_comsem([
         'command' => 'parser:parse-stability',
-        'version' => 'not-a-version'
+        'version' => 'not-a-version',
     ]);
     $json = require_json_object($result);
 
     $expected = [
         'command' => 'parser:parse-stability',
-        'result' => 'stable'
+        'result' => 'stable',
     ];
 
     expect($result['status'])
@@ -73,13 +73,13 @@ it('preserves permissive parse stability behavior for malformed versions', funct
 it('normalizes versions through a VersionParser instance method', function (): void {
     $result = run_comsem([
         'command' => 'parser:normalize',
-        'version' => 'v1.2.3'
+        'version' => 'v1.2.3',
     ]);
     $json = require_json_object($result);
 
     $expected = [
         'command' => 'parser:normalize',
-        'result' => '1.2.3.0'
+        'result' => '1.2.3.0',
     ];
 
     expect($result['status'])
@@ -92,20 +92,19 @@ it('normalizes versions through a VersionParser instance method', function (): v
         ->toBe(json_encode($expected, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES) . PHP_EOL);
 });
 
-it('returns runtime json when normalize rejects malformed versions', function (): void {
+it('returns json when normalize rejects malformed versions', function (): void {
     $result = run_comsem([
         'command' => 'parser:normalize',
-        'version' => 'not-a-version'
+        'version' => 'not-a-version',
     ]);
     $json = require_json_object($result);
 
     $expected = [
         'command' => 'parser:normalize',
         'error' => [
-            'category' => 'runtime',
             'class' => 'UnexpectedValueException',
-            'message' => 'Invalid version string "not-a-version"'
-        ]
+            'message' => 'Invalid version string "not-a-version"',
+        ],
     ];
 
     expect($result['status'])
@@ -121,17 +120,16 @@ it('returns runtime json when normalize rejects malformed versions', function ()
 it('preserves tag-like strings in json output by writing raw output', function (): void {
     $result = run_comsem([
         'command' => 'parser:normalize',
-        'version' => '<info>boom</info>'
+        'version' => '<info>boom</info>',
     ]);
     $json = require_json_object($result);
 
     $expected = [
         'command' => 'parser:normalize',
         'error' => [
-            'category' => 'runtime',
             'class' => 'UnexpectedValueException',
-            'message' => 'Invalid version string "<info>boom</info>"'
-        ]
+            'message' => 'Invalid version string "<info>boom</info>"',
+        ],
     ];
 
     expect($result['status'])
@@ -147,13 +145,13 @@ it('preserves tag-like strings in json output by writing raw output', function (
 it('returns true for valid parser is-valid checks', function (): void {
     $result = run_comsem([
         'command' => 'parser:is-valid',
-        'version' => '1.0.0'
+        'version' => '1.0.0',
     ]);
     $json = require_json_object($result);
 
     $expected = [
         'command' => 'parser:is-valid',
-        'result' => true
+        'result' => true,
     ];
 
     expect($result['status'])
@@ -169,13 +167,13 @@ it('returns true for valid parser is-valid checks', function (): void {
 it('returns false for invalid parser is-valid checks without failing the command', function (): void {
     $result = run_comsem([
         'command' => 'parser:is-valid',
-        'version' => 'not-a-version'
+        'version' => 'not-a-version',
     ]);
     $json = require_json_object($result);
 
     $expected = [
         'command' => 'parser:is-valid',
-        'result' => false
+        'result' => false,
     ];
 
     expect($result['status'])

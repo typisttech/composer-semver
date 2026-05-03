@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TypistTech\ComSem;
 
@@ -24,19 +24,24 @@ final class Runner
 {
     /** @var class-string<Command>[]  */
     private const array COMMANDS = [
+        // Comparator
+        EqualToCommand::class,
         GreaterThanCommand::class,
         GreaterThanOrEqualToCommand::class,
         LessThanCommand::class,
         LessThanOrEqualToCommand::class,
-        EqualToCommand::class,
         NotEqualToCommand::class,
-        SatisfiesCommand::class,
-        SatisfiedByCommand::class,
-        SortCommand::class,
-        RSortCommand::class,
-        ParseStabilityCommand::class,
+
+        //Parser
         IsValidCommand::class,
-        NormalizeCommand::class
+        NormalizeCommand::class,
+        ParseStabilityCommand::class,
+
+        // Semver
+        RSortCommand::class,
+        SatisfiedByCommand::class,
+        SatisfiesCommand::class,
+        SortCommand::class,
     ];
 
     public static function buildApplication(): Application
@@ -60,14 +65,17 @@ final class Runner
     {
         $rootPackage = InstalledVersions::getRootPackage();
 
-        if ($rootPackage['pretty_version'] !== '') {
-            return $rootPackage['pretty_version'];
+        $version = $rootPackage['pretty_version'];
+        if ($version === '') {
+            $version = $rootPackage['version'];
         }
 
-        if ($rootPackage['version'] !== '') {
-            return $rootPackage['version'];
+        $reference = (string) $rootPackage['reference'];
+        $isDev = $rootPackage['dev'];
+        if ($isDev && $reference !== '' && $version !== '') {
+            $version = sprintf('%s#%s', $version, $reference);
         }
 
-        return 'UNKNOWN';
+        return $version !== '' ? $version : 'UNKNOWN';
     }
 }

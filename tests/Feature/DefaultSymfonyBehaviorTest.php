@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Symfony\Component\Console\Command\Command;
 
 it('keeps top level help text-based', function (): void {
     $result = run_comsem([
-        '--help' => true
+        '--help' => true,
     ]);
 
     expect($result['status'])
@@ -22,7 +22,7 @@ it('keeps top level help text-based', function (): void {
 it('keeps command help text-based and includes wrapped method help', function (): void {
     $result = run_comsem([
         'command' => 'help',
-        'command_name' => 'comparator:greater-than'
+        'command_name' => 'comparator:greater-than',
     ]);
 
     expect($result['status'])
@@ -39,7 +39,7 @@ it('keeps command help text-based and includes wrapped method help', function ()
 
 it('keeps list output text-based and exposes custom commands', function (): void {
     $result = run_comsem([
-        'command' => 'list'
+        'command' => 'list',
     ]);
 
     expect($result['status'])
@@ -56,7 +56,7 @@ it('keeps list output text-based and exposes custom commands', function (): void
 
 it('keeps version output text-based and detailed', function (): void {
     $result = run_comsem([
-        '--version' => true
+        '--version' => true,
     ]);
 
     expect($result['status'])
@@ -76,7 +76,7 @@ it('keeps version output text-based and detailed', function (): void {
 it('keeps completion help text-based', function (): void {
     $result = run_comsem([
         'command' => 'completion',
-        '--help' => true
+        '--help' => true,
     ]);
 
     expect($result['status'])

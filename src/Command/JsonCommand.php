@@ -1,12 +1,13 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TypistTech\ComSem\Command;
 
+use Closure;
 use Composer\InstalledVersions;
+use Override;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
 
@@ -15,43 +16,38 @@ use function json_encode;
 
 abstract class JsonCommand extends Command
 {
-    final protected function writeSuccess(OutputInterface $output, mixed $result): int
+    final protected function exec(OutputInterface $output, Closure $fn): int
     {
-        $this->writeJson($output, [
-            'command' => $this->getName(),
-            'result' => $result
-        ]);
+        try {
+            $this->writeJson($output, [
+                'command' => $this->getName(),
+                'result' => $fn(),
+            ]);
 
-        return Command::SUCCESS;
-    }
+            return Command::SUCCESS;
+        } catch (Throwable $throwable) {
+            $this->writeJson($output, [
+                'command' => $this->getName(),
+                'error' => [
+                    'class' => get_debug_type($throwable),
+                    'message' => $throwable->getMessage(),
+                ],
+            ]);
 
-    final public function writeFailure(OutputInterface $output, Throwable $throwable): int
-    {
-        $isUsageThrowable = $throwable instanceof ExceptionInterface;
-
-        $this->writeJson($output, [
-            'command' => $this->getName(),
-            'error' => [
-                'category' => $isUsageThrowable ? 'usage' : 'runtime',
-                'class' => get_debug_type($throwable),
-                'message' => $throwable->getMessage()
-            ]
-        ]);
-
-        return $isUsageThrowable ? Command::INVALID : Command::FAILURE;
+            return Command::FAILURE;
+        }
     }
 
     /**
      * @param array<string, mixed> $payload
      */
-    final protected function writeJson(OutputInterface $output, array $payload): void
+    private function writeJson(OutputInterface $output, array $payload): void
     {
         $json = json_encode($payload, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES);
-
         $output->write($json, true, OutputInterface::OUTPUT_RAW);
     }
 
-    #[\Override]
+    #[Override]
     public function getProcessedHelp(): string
     {
         $ref = (string) InstalledVersions::getPrettyVersion('composer/semver');

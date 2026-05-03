@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TypistTech\ComSem\Command\Comparator;
 
@@ -18,7 +18,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 
         See <href=%semver.url%/src/Comparator.php>%semver.url%/src/Comparator.php</>
         HELP,
-    usages: ['1.25.0 1.24.0']
+    usages: ['1.25.0 1.24.0'],
 )]
 final class GreaterThanCommand extends JsonCommand
 {
@@ -27,8 +27,8 @@ final class GreaterThanCommand extends JsonCommand
         #[Argument('The first version string.')]
         string $version1,
         #[Argument('The second version string.')]
-        string $version2
+        string $version2,
     ): int {
-        return $this->writeSuccess($output, Comparator::greaterThan($version1, $version2));
+        return $this->exec($output, static fn() => Comparator::greaterThan($version1, $version2));
     }
 }

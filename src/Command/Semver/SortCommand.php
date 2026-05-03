@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TypistTech\ComSem\Command\Semver;
 
@@ -14,7 +14,7 @@ use TypistTech\ComSem\Command\JsonCommand;
     name: 'semver:sort',
     description: 'Sort versions in ascending Composer order',
     help: SortCommand::HELP,
-    usages: ['1.0.0-beta 1.0.0 2.0.0']
+    usages: ['1.0.0-beta 1.0.0 2.0.0'],
 )]
 final class SortCommand extends JsonCommand
 {
@@ -28,11 +28,8 @@ final class SortCommand extends JsonCommand
      * @param list<string> $versions
      * @throws \UnexpectedValueException
      */
-    public function __invoke(
-        OutputInterface $output,
-        #[Argument('The versions to sort.')]
-        array $versions
-    ): int {
-        return $this->writeSuccess($output, Semver::sort($versions));
+    public function __invoke(OutputInterface $output, #[Argument('The versions to sort.')] array $versions): int
+    {
+        return $this->exec($output, static fn() => Semver::sort($versions));
     }
 }

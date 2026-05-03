@@ -13,15 +13,16 @@ excludes = []
 literal-separator = true
 
 [formatter]
-preset = "psr-12"
+preset = "default"
+always-break-named-arguments-list = true
+always-break-attribute-named-argument-lists = true
 
 [linter]
 integrations = ["symfony", "pest"]
 
 [linter.rules]
-ambiguous-function-call = { enabled = false }
 literal-named-argument = { enabled = false }
-halstead = { effort-threshold = 7000 }
+tagged-todo = { enabled = false }
 
 # https://mago.carthage.software/tools/analyzer/configuration-reference#strict-mode
 [analyzer]
@@ -35,7 +36,7 @@ check-missing-override = true
 find-unused-parameters = true
 check-missing-type-hints = true
 check-closure-missing-type-hints = true
-check-arrow-function-missing-type-hints = true
+check-arrow-function-missing-type-hints = false # Do not require type hints for arrow functions.
 enforce-class-finality = true
 require-api-or-internal = false # Do not require @api nor or @internal annotations.
 check-experimental = true

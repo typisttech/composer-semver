@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TypistTech\ComSem\Command\Semver;
 
@@ -18,7 +18,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 
         See <href=%semver.url%/src/Semver.php>%semver.url%/src/Semver.php</>
         HELP,
-    usages: ['1.0.0-beta 1.0.0 2.0.0']
+    usages: ['1.0.0-beta 1.0.0 2.0.0'],
 )]
 final class RSortCommand extends JsonCommand
 {
@@ -26,11 +26,8 @@ final class RSortCommand extends JsonCommand
      * @param list<string> $versions
      * @throws \UnexpectedValueException
      */
-    public function __invoke(
-        OutputInterface $output,
-        #[Argument('The versions to reverse sort.')]
-        array $versions
-    ): int {
-        return $this->writeSuccess($output, Semver::rsort($versions));
+    public function __invoke(OutputInterface $output, #[Argument('The versions to reverse sort.')] array $versions): int
+    {
+        return $this->exec($output, static fn() => Semver::rsort($versions));
     }
 }

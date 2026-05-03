@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Symfony\Component\Console\Tester\ApplicationTester;
 use TypistTech\ComSem\Runner;
@@ -20,7 +20,7 @@ if (!function_exists('run_comsem')) {
         $status = $tester->run($input, [
             'interactive' => false,
             'decorated' => false,
-            'capture_stderr_separately' => true
+            'capture_stderr_separately' => true,
         ]);
 
         $stdout = $tester->getDisplay();
@@ -30,7 +30,7 @@ if (!function_exists('run_comsem')) {
             'status' => $status,
             'stdout' => $stdout,
             'stderr' => $stderr,
-            'json' => decode_json_payload($stdout)
+            'json' => decode_json_payload($stdout),
         ];
     }
 }

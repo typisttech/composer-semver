@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TypistTech\ComSem\Command\Parser;
 
@@ -18,17 +18,17 @@ use TypistTech\ComSem\Command\JsonCommand;
 
         See <href=%semver.url%/src/VersionParser.php>%semver.url%/src/VersionParser.php</>
         HELP,
-    usages: ['1.0.0']
+    usages: ['1.0.0'],
 )]
 final class IsValidCommand extends JsonCommand
 {
     public function __invoke(
         OutputInterface $output,
         #[Argument('The version string to validate.')]
-        string $version
+        string $version,
     ): int {
         $parser = new VersionParser();
 
-        return $this->writeSuccess($output, $parser->isValid($version));
+        return $this->exec($output, static fn() => $parser->isValid($version));
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TypistTech\ComSem\Command\Semver;
 
@@ -18,7 +18,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 
         See <href=%semver.url%/src/Semver.php>%semver.url%/src/Semver.php</>
         HELP,
-    usages: ["1.2.3 '^1.0'"]
+    usages: ["1.2.3 '^1.0'"],
 )]
 final class SatisfiesCommand extends JsonCommand
 {
@@ -27,8 +27,8 @@ final class SatisfiesCommand extends JsonCommand
         #[Argument('The version to test.')]
         string $version,
         #[Argument('The Composer constraint string.')]
-        string $constraints
+        string $constraints,
     ): int {
-        return $this->writeSuccess($output, Semver::satisfies($version, $constraints));
+        return $this->exec($output, static fn() => Semver::satisfies($version, $constraints));
     }
 }

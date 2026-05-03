@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TypistTech\ComSem\Command\Parser;
 
@@ -18,7 +18,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 
         See <href=%semver.url%/src/VersionParser.php>%semver.url%/src/VersionParser.php</>
         HELP,
-    usages: ['v1.2.3']
+    usages: ['v1.2.3'],
 )]
 final class NormalizeCommand extends JsonCommand
 {
@@ -28,10 +28,10 @@ final class NormalizeCommand extends JsonCommand
     public function __invoke(
         OutputInterface $output,
         #[Argument('The version string to normalize.')]
-        string $version
+        string $version,
     ): int {
         $parser = new VersionParser();
 
-        return $this->writeSuccess($output, $parser->normalize($version));
+        return $this->exec($output, static fn() => $parser->normalize($version));
     }
 }
