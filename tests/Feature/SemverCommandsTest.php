@@ -13,7 +13,6 @@ it('returns success json for semver satisfies', function (): void {
     $json = require_json_object($result);
 
     $expected = [
-        'command' => 'semver:satisfies',
         'result' => true,
     ];
 
@@ -36,7 +35,6 @@ it('returns filtered versions for semver satisfied-by', function (): void {
     $json = require_json_object($result);
 
     $expected = [
-        'command' => 'semver:satisfied-by',
         'result' => ['1.0.0', '1.2.0'],
     ];
 
@@ -58,7 +56,6 @@ it('returns sorted versions for semver sort', function (): void {
     $json = require_json_object($result);
 
     $expected = [
-        'command' => 'semver:sort',
         'result' => ['1.0.0-beta', '1.0.0', '2.0.0'],
     ];
 
@@ -80,7 +77,6 @@ it('returns reverse sorted versions for semver rsort', function (): void {
     $json = require_json_object($result);
 
     $expected = [
-        'command' => 'semver:rsort',
         'result' => ['2.0.0', '1.0.0', '1.0.0-beta'],
     ];
 
@@ -102,7 +98,6 @@ it('returns json when semver sort rejects malformed versions', function (): void
     $json = require_json_object($result);
 
     $expected = [
-        'command' => 'semver:sort',
         'error' => [
             'class' => 'UnexpectedValueException',
             'message' => 'Invalid version string "not-a-version"',
@@ -128,7 +123,6 @@ it('returns json when semver satisfies receives malformed constraints', function
     $json = require_json_object($result);
 
     $expected = [
-        'command' => 'semver:satisfies',
         'error' => [
             'class' => 'UnexpectedValueException',
             'message' => 'Could not parse version constraint not-a-constraint: Invalid version string "not-a-constraint"',

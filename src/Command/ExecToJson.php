@@ -14,20 +14,16 @@ use function json_encode;
 
 trait ExecToJson
 {
-    protected string $name;
-
     private function exec(OutputInterface $output, Closure $fn): int
     {
         try {
             $this->writeJson($output, [
-                'command' => $this->name,
                 'result' => $fn(),
             ]);
 
             return Command::SUCCESS;
         } catch (Throwable $throwable) {
             $this->writeJson($output, [
-                'command' => $this->name,
                 'error' => [
                     'class' => get_debug_type($throwable),
                     'message' => $throwable->getMessage(),
