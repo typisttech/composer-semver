@@ -26,7 +26,6 @@ it('returns success json for comparator commands', function (
     $json = require_json_object($result);
 
     $expected = [
-        'ok' => true,
         'command' => $commandName,
         'result' => true
     ];
@@ -50,7 +49,6 @@ it('preserves comparator false results as successful command execution', functio
     $json = require_json_object($result);
 
     $expected = [
-        'ok' => true,
         'command' => 'comparator:greater-than',
         'result' => false
     ];

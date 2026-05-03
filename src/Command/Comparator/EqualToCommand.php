@@ -18,7 +18,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 )]
 final class EqualToCommand extends JsonCommand
 {
-    public const HELP = <<<HELP
+    public const string HELP = <<<HELP
         Wraps <href=%semver.url%/src/Comparator.php>Composer\Semver\Comparator::equalTo()</> and returns its boolean result as JSON.
 
         See <href=%semver.url%/src/Comparator.php>%semver.url%/src/Comparator.php</>

@@ -18,7 +18,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 )]
 final class NormalizeCommand extends JsonCommand
 {
-    public const HELP = <<<HELP
+    public const string HELP = <<<HELP
         Wraps <href=%semver.url%/src/VersionParser.php>Composer\Semver\VersionParser::normalize()</> and returns the normalized version string as JSON.
 
         See <href=%semver.url%/src/VersionParser.php>%semver.url%/src/VersionParser.php</>

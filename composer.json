@@ -79,6 +79,7 @@
       "mago analyse --fix",
       "mago lint --fix",
       "@fmt"
-    ]
+    ],
+    "test": "pest"
   }
 }

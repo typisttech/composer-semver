@@ -18,7 +18,6 @@ abstract class JsonCommand extends Command
     final protected function writeSuccess(OutputInterface $output, mixed $result): int
     {
         $this->writeJson($output, [
-            'ok' => true,
             'command' => $this->getName(),
             'result' => $result
         ]);
@@ -31,7 +30,6 @@ abstract class JsonCommand extends Command
         $isUsageThrowable = $throwable instanceof ExceptionInterface;
 
         $this->writeJson($output, [
-            'ok' => false,
             'command' => $this->getName(),
             'error' => [
                 'category' => $isUsageThrowable ? 'usage' : 'runtime',
@@ -53,6 +51,7 @@ abstract class JsonCommand extends Command
         $output->write($json, true, OutputInterface::OUTPUT_RAW);
     }
 
+    #[\Override]
     public function getProcessedHelp(): string
     {
         $ref = (string) InstalledVersions::getPrettyVersion('composer/semver');
@@ -64,10 +63,6 @@ abstract class JsonCommand extends Command
         }
         $url = sprintf('https://github.com/composer/semver/blob/%s', $ref);
 
-        return str_replace(
-            '%semver.url%',
-            $url,
-            parent::getProcessedHelp(),
-        );
+        return str_replace('%semver.url%', $url, parent::getProcessedHelp());
     }
 }

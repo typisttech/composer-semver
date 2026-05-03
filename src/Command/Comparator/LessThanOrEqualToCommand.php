@@ -18,7 +18,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 )]
 final class LessThanOrEqualToCommand extends JsonCommand
 {
-    public const HELP = <<<HELP
+    public const string HELP = <<<HELP
         Wraps <href=%semver.url%/src/Comparator.php>Composer\Semver\Comparator::lessThanOrEqualTo()</> and returns its boolean result as JSON.
 
         See <href=%semver.url%/src/Comparator.php>%semver.url%/src/Comparator.php</>

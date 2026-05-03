@@ -18,7 +18,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 )]
 final class SortCommand extends JsonCommand
 {
-    public const HELP = <<<HELP
+    public const string HELP = <<<HELP
         Wraps <href=%semver.url%/src/Semver.php>Composer\Semver\Semver::sort()</> and returns the sorted version list as JSON.
 
         See <href=%semver.url%/src/Semver.php>%semver.url%/src/Semver.php</>

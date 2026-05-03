@@ -18,15 +18,12 @@ use TypistTech\ComSem\Command\JsonCommand;
 )]
 final class SatisfiesCommand extends JsonCommand
 {
-    public const HELP = <<<HELP
+    public const string HELP = <<<HELP
         Wraps <href=%semver.url%/src/Semver.php>Composer\Semver\Semver::satisfies()</> and returns its boolean result as JSON.
 
         See <href=%semver.url%/src/Semver.php>%semver.url%/src/Semver.php</>
         HELP;
 
-    /**
-     * @throws \UnexpectedValueException
-     */
     public function __invoke(
         OutputInterface $output,
         #[Argument('The version to test.')]

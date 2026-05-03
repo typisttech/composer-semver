@@ -18,7 +18,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 )]
 final class ParseStabilityCommand extends JsonCommand
 {
-    public const HELP = <<<HELP
+    public const string HELP = <<<HELP
         Wraps <href=%semver.url%/src/VersionParser.php>Composer\Semver\VersionParser::parseStability()</> and returns the stability string as JSON.
 
         See <href=%semver.url%/src/VersionParser.php>%semver.url%/src/VersionParser.php</>

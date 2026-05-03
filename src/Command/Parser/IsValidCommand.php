@@ -18,7 +18,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 )]
 final class IsValidCommand extends JsonCommand
 {
-    public const HELP = <<<HELP
+    public const string HELP = <<<HELP
         Wraps <href=%semver.url%/src/VersionParser.php>Composer\Semver\VersionParser::isValid()</> and returns its boolean result as JSON.
 
         See <href=%semver.url%/src/VersionParser.php>%semver.url%/src/VersionParser.php</>

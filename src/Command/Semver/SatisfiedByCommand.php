@@ -18,7 +18,7 @@ use TypistTech\ComSem\Command\JsonCommand;
 )]
 final class SatisfiedByCommand extends JsonCommand
 {
-    public const HELP = <<<HELP
+    public const string HELP = <<<HELP
         Wraps <href=%semver.url%/src/Semver.php>Composer\Semver\Semver::satisfiedBy()</>. The CLI uses <constraints> <versions>... because Symfony requires array arguments to come last.
 
         See <href=%semver.url%/src/Semver.php>%semver.url%/src/Semver.php</>

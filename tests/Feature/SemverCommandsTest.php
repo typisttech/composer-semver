@@ -13,7 +13,6 @@ it('returns success json for semver satisfies', function (): void {
     $json = require_json_object($result);
 
     $expected = [
-        'ok' => true,
         'command' => 'semver:satisfies',
         'result' => true
     ];
@@ -37,7 +36,6 @@ it('returns filtered versions for semver satisfied-by', function (): void {
     $json = require_json_object($result);
 
     $expected = [
-        'ok' => true,
         'command' => 'semver:satisfied-by',
         'result' => ['1.0.0', '1.2.0']
     ];
@@ -60,7 +58,6 @@ it('returns sorted versions for semver sort', function (): void {
     $json = require_json_object($result);
 
     $expected = [
-        'ok' => true,
         'command' => 'semver:sort',
         'result' => ['1.0.0-beta', '1.0.0', '2.0.0']
     ];
@@ -83,7 +80,6 @@ it('returns reverse sorted versions for semver rsort', function (): void {
     $json = require_json_object($result);
 
     $expected = [
-        'ok' => true,
         'command' => 'semver:rsort',
         'result' => ['2.0.0', '1.0.0', '1.0.0-beta']
     ];
@@ -105,7 +101,6 @@ it('returns usage json when required array arguments are missing', function (): 
     $json = require_json_object($result);
 
     $expected = [
-        'ok' => false,
         'command' => 'semver:sort',
         'error' => [
             'category' => 'usage',
@@ -132,7 +127,6 @@ it('returns runtime json when semver sort rejects malformed versions', function 
     $json = require_json_object($result);
 
     $expected = [
-        'ok' => false,
         'command' => 'semver:sort',
         'error' => [
             'category' => 'runtime',
@@ -160,7 +154,6 @@ it('returns runtime json when semver satisfies receives malformed constraints', 
     $json = require_json_object($result);
 
     $expected = [
-        'ok' => false,
         'command' => 'semver:satisfies',
         'error' => [
             'category' => 'runtime',

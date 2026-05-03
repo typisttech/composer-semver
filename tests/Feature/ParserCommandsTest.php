@@ -12,7 +12,6 @@ it('returns parsed stability for beta versions', function (): void {
     $json = require_json_object($result);
 
     $expected = [
-        'ok' => true,
         'command' => 'parser:parse-stability',
         'result' => 'beta'
     ];
@@ -35,7 +34,6 @@ it('preserves permissive parse stability behavior for dev branches', function ()
     $json = require_json_object($result);
 
     $expected = [
-        'ok' => true,
         'command' => 'parser:parse-stability',
         'result' => 'dev'
     ];
@@ -58,7 +56,6 @@ it('preserves permissive parse stability behavior for malformed versions', funct
     $json = require_json_object($result);
 
     $expected = [
-        'ok' => true,
         'command' => 'parser:parse-stability',
         'result' => 'stable'
     ];
@@ -81,7 +78,6 @@ it('normalizes versions through a VersionParser instance method', function (): v
     $json = require_json_object($result);
 
     $expected = [
-        'ok' => true,
         'command' => 'parser:normalize',
         'result' => '1.2.3.0'
     ];
@@ -104,7 +100,6 @@ it('returns runtime json when normalize rejects malformed versions', function ()
     $json = require_json_object($result);
 
     $expected = [
-        'ok' => false,
         'command' => 'parser:normalize',
         'error' => [
             'category' => 'runtime',
@@ -131,7 +126,6 @@ it('preserves tag-like strings in json output by writing raw output', function (
     $json = require_json_object($result);
 
     $expected = [
-        'ok' => false,
         'command' => 'parser:normalize',
         'error' => [
             'category' => 'runtime',
@@ -158,7 +152,6 @@ it('returns true for valid parser is-valid checks', function (): void {
     $json = require_json_object($result);
 
     $expected = [
-        'ok' => true,
         'command' => 'parser:is-valid',
         'result' => true
     ];
@@ -181,7 +174,6 @@ it('returns false for invalid parser is-valid checks without failing the command
     $json = require_json_object($result);
 
     $expected = [
-        'ok' => true,
         'command' => 'parser:is-valid',
         'result' => false
     ];
