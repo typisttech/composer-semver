@@ -20,17 +20,10 @@ use TypistTech\ComSem\Command\ExecToJson;
         HELP,
     usages: ['1.24.0 1.25.0'],
 )]
-class LessThanCommand
+class LessThanCommand extends AbstractCommand
 {
-    use ExecToJson;
-
-    public function __invoke(
-        OutputInterface $output,
-        #[Argument('The first version string.')]
-        string $version1,
-        #[Argument('The second version string.')]
-        string $version2,
-    ): int {
-        return $this->exec($output, static fn() => Comparator::lessThan($version1, $version2));
+    protected function compare(string $version1, string $version2): bool
+    {
+        return Comparator::lessThan($version1, $version2);
     }
 }

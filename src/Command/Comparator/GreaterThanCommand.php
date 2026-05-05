@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TypistTech\ComSem\Command\Comparator;
 
 use Composer\Semver\Comparator;
+use Composer\Semver\VersionParser;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,17 +21,10 @@ use TypistTech\ComSem\Command\ExecToJson;
         HELP,
     usages: ['1.25.0 1.24.0'],
 )]
-class GreaterThanCommand
+class GreaterThanCommand extends AbstractCommand
 {
-    use ExecToJson;
-
-    public function __invoke(
-        OutputInterface $output,
-        #[Argument('The first version string.')]
-        string $version1,
-        #[Argument('The second version string.')]
-        string $version2,
-    ): int {
-        return $this->exec($output, static fn() => Comparator::greaterThan($version1, $version2));
+    protected function compare(string $version1, string $version2): bool
+    {
+        return Comparator::greaterThan($version1, $version2);
     }
 }

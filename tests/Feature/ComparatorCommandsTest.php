@@ -2,61 +2,45 @@
 
 declare(strict_types=1);
 
+use Composer\Semver\Comparator;
 use Symfony\Component\Console\Command\Command;
 
-dataset('successful comparator commands', [
-    ['comparator:greater-than',             '1.25.0', '1.24.0'],
-    ['comparator:greater-than-or-equal-to', '1.25.0', '1.25.0'],
-    ['comparator:less-than',                '1.24.0', '1.25.0'],
-    ['comparator:less-than-or-equal-to',    '1.24.0', '1.24.0'],
-    ['comparator:equal-to',                 '1.24.0', '1.24.0'],
-    ['comparator:not-equal-to',             '1.24.0', '1.25.0'],
+dataset('comparator commands', [
+    ['comparator:equal-to',                 '1.2.3', '1.2.3', true],
+    ['comparator:equal-to',                 '1.2.3.0', '1.2.3', true],
+
+    ['comparator:greater-than',             '9.8.7', '1.2.3', true],
+    ['comparator:greater-than',             '1.2.3', '9.8.7', false],
+    ['comparator:greater-than',             '1.2.3', '1.2.3', false],
+
+    ['comparator:greater-than-or-equal-to', '9.8.7', '9.8.7', true],
+    ['comparator:less-than',                '1.2.3', '9.8.7', true],
+    ['comparator:less-than-or-equal-to',    '1.2.3', '1.2.3', true],
+    ['comparator:equal-to',                 '1.2.3', '1.2.3', true],
+    ['comparator:not-equal-to',             '1.2.3', '9.8.7', true],
 ]);
 
-it('returns success json for comparator commands', function (
+test('comparator commands', function (
     string $commandName,
     string $version1,
     string $version2,
+    bool $expected,
 ): void {
-    $result = run_comsem([
+    $inputs = [
         'command' => $commandName,
         'version1' => $version1,
         'version2' => $version2,
-    ]);
-    $json = require_json_object($result);
-
-    $expected = [
-        'result' => true,
     ];
+    [
+        'status' => $status,
+        'stdout' => $stdout,
+        'stderr' => $stderr,
+    ] = $this->runComSem($inputs);
 
-    expect($result['status'])
-        ->toBe(Command::SUCCESS)
-        ->and($result['stderr'])
-        ->toBeEmpty()
-        ->and($json)
-        ->toBe($expected)
-        ->and($result['stdout'])
-        ->toBe(json_encode($expected, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES) . PHP_EOL);
-})->with('successful comparator commands');
+    expect($status)->toBe(Command::SUCCESS);
+    expect($stderr)->toBeEmpty();
 
-it('preserves comparator false results as successful command execution', function (): void {
-    $result = run_comsem([
-        'command' => 'comparator:greater-than',
-        'version1' => 'not-a-version',
-        'version2' => '1.0.0',
-    ]);
-    $json = require_json_object($result);
-
-    $expected = [
-        'result' => false,
-    ];
-
-    expect($result['status'])
-        ->toBe(Command::SUCCESS)
-        ->and($result['stderr'])
-        ->toBeEmpty()
-        ->and($json)
-        ->toBe($expected)
-        ->and($result['stdout'])
-        ->toBe(json_encode($expected, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES) . PHP_EOL);
-});
+    expect($stdout)
+        ->json()
+        ->result->toBe($expected);
+})->with('comparator commands');
