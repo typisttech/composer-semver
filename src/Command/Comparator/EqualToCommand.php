@@ -5,11 +5,7 @@ declare(strict_types=1);
 namespace TypistTech\ComSem\Command\Comparator;
 
 use Composer\Semver\Comparator;
-use Composer\Semver\VersionParser;
-use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Output\OutputInterface;
-use TypistTech\ComSem\Command\ExecToJson;
 
 #[AsCommand(
     name: 'comparator:equal-to',
@@ -23,6 +19,7 @@ use TypistTech\ComSem\Command\ExecToJson;
 )]
 class EqualToCommand extends AbstractCommand
 {
+    #[\Override]
     protected function compare(string $version1, string $version2): bool
     {
         return Comparator::equalTo($version1, $version2);

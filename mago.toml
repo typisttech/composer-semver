@@ -1,3 +1,4 @@
+#:schema https://mago.carthage.software/1.26.0/schema.json
 # Welcome to Mago!
 # For full documentation, see https://mago.carthage.software/tools/overview
 version = "1"
@@ -23,7 +24,7 @@ integrations = ["symfony", "pest"]
 [linter.rules]
 literal-named-argument = { enabled = false }
 tagged-todo = { enabled = false }
-#class-must-be-final = { enabled = false }
+no-boolean-flag-parameter = { enabled = false }
 
 # https://mago.carthage.software/tools/analyzer/configuration-reference#strict-mode
 [analyzer]
@@ -41,8 +42,7 @@ enforce-class-finality = false # Do not require classes to be final.
 require-api-or-internal = false # Do not require @api nor or @internal annotations.
 check-experimental = true
 
-strict-list-index-checks = true
+strict-array-index-existence = true
 no-boolean-literal-comparison = true
 
-allow-possibly-undefined-array-keys = false
 trust-existence-checks = false

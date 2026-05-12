@@ -8,12 +8,15 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
 use Symfony\Component\Console\Tester\ApplicationTester;
 use TypistTech\ComSem\Application;
 
-abstract class TestCase extends BaseTestCase {
+abstract class TestCase extends BaseTestCase
+{
     /**
+     * This method is made public to make mago analyizer happy only.
+     *
      * @param array<int|string, string> $input
      * @return array{status: int, stdout: string, stderr: string}
      */
-    protected function runComSem(array $input): array
+    public function runComSem(array $input): array
     {
         $application = new Application();
         $application->setAutoExit(false);

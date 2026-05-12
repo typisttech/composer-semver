@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace TypistTech\ComSem\Command\Comparator;
 
 use Composer\Semver\Comparator;
-use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Output\OutputInterface;
-use TypistTech\ComSem\Command\ExecToJson;
 
 #[AsCommand(
     name: 'comparator:not-equal-to',
@@ -22,6 +19,7 @@ use TypistTech\ComSem\Command\ExecToJson;
 )]
 class NotEqualToCommand extends AbstractCommand
 {
+    #[\Override]
     protected function compare(string $version1, string $version2): bool
     {
         return Comparator::notEqualTo($version1, $version2);
