@@ -14,7 +14,7 @@ updates:
       interval: daily
     cooldown:
       default-days: 3
-      
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
@@ -23,3 +23,7 @@ updates:
       default-days: 3
       exclude:
         - "typisttech/*"
+    groups:
+      typisttech:
+        patterns:
+          - "typisttech/*"
